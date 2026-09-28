@@ -52,6 +52,7 @@ components/
   Marquee.tsx           Kayan uzmanlık şeridi
   Projects.tsx          Projeler: filtreli masonry galeri + lightbox
   CtaBand.tsx           Paralaks görselli çağrı bandı
+  CallButton.tsx        Mobilde sabit "Hemen Ara" butonu
   Contact.tsx           İletişim bilgileri + form
   Footer.tsx
   ui/                   Reveal, SectionHeading, Counter, InstagramIcon, Logo
@@ -68,7 +69,11 @@ ARAS logo.png           Müşteriden gelen orijinal logo — silme
 - **Hizmet bölgesi:** Ankara geneli
 - **Uzmanlık:** Konut ve villa projeleri; A'dan Z'ye anahtar teslim iç mimari ve dekorasyon. Kaba inşaat sonrası tüm ince işçilik ve dekoratif uygulamalar kendi profesyonel ekibimizce yapılır.
 - **Instagram:** https://www.instagram.com/aras.insaatt/
-- **Telefon / e-posta / açık adres:** *henüz yok* — müşteriden gelince `lib/site.ts`'e ekle; üst şerit, iletişim ve footer otomatik güncellenir.
+- **Telefon:** 0532 630 46 77 → `tel:+905326304677`
+- **E-posta:** erbakanaras@gmail.com
+- **Açık adres:** *henüz yok*
+
+Bu alanlar `lib/site.ts`'ten okunur: üst şerit, mobil menü, iletişim bölümü, footer, mobil "Hemen Ara" butonu, form hata mesajı ve `app/layout.tsx` JSON-LD (JSON-LD'deki `telephone` uluslararası biçimde ayrıca yazılı). Boş bırakılan alan sitede gösterilmez.
 
 Yıllık tecrübe sayısı `new Date().getFullYear() - 1994` ile hesaplanır; elle yazılmaz.
 
@@ -124,7 +129,7 @@ Vercel önerilir (Next.js'in yerel ortamı). Ortam değişkenlerini Vercel panel
 
 ## Açık işler
 
-- [ ] Telefon, e-posta, açık adres → `lib/site.ts`
+- [ ] Açık adres → `lib/site.ts`
 - [ ] Gerçek proje fotoğrafları → galeri ve hizmet görselleri
 - [ ] Alan adı kesinleşince `metadataBase` + OG görseli
 - [ ] Form için Resend (veya benzeri) hesabı + KVKK aydınlatma metni sayfası

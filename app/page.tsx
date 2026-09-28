@@ -7,6 +7,7 @@ import Projects from "@/components/Projects";
 import CtaBand from "@/components/CtaBand";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import CallButton from "@/components/CallButton";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <CallButton />
     </>
   );
 }

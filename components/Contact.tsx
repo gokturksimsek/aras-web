@@ -169,11 +169,11 @@ export default function Contact() {
                       {status === "ok" && "Teşekkürler! Mesajınız bize ulaştı, en kısa sürede dönüş yapacağız."}
                       {status === "unavailable" && (
                         <>
-                          Form şu an bakımda. Lütfen bize{" "}
-                          <a href={site.instagram.url} target="_blank" rel="noopener noreferrer" className="text-gold underline underline-offset-4">
-                            Instagram
-                          </a>{" "}
-                          üzerinden yazın.
+                          Form şu an bakımda. Lütfen bizi{" "}
+                          <a href={site.phoneHref} className="text-gold underline underline-offset-4">{site.phone}</a>{" "}
+                          numarasından arayın ya da{" "}
+                          <a href={`mailto:${site.email}`} className="text-gold underline underline-offset-4">e-posta</a>{" "}
+                          gönderin.
                         </>
                       )}
                       {status === "error" && "Bir sorun oluştu. Lütfen tekrar deneyin."}

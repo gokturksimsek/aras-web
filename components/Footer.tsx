@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Mail, Phone } from "lucide-react";
 import InstagramIcon from "./ui/InstagramIcon";
 import { nav, services, site } from "@/lib/site";
 
@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="hairline absolute inset-x-0 top-0 h-px opacity-60" aria-hidden="true" />
 
       <div className="container-lux grid gap-14 py-20 md:grid-cols-2 lg:grid-cols-12">
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-4">
           <Image src="/img/aras-logo.png" alt="ARAS İNŞAAT — Özenle ve Güvenle, Since 1994" width={146} height={160} className="h-40 w-auto" />
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-stone">{site.description}</p>
         </div>
@@ -38,8 +38,26 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div className="lg:col-span-2">
-          <p className="eyebrow mb-6">Takip Edin</p>
+        <div className="lg:col-span-3">
+          <p className="eyebrow mb-6">İletişim</p>
+          <ul className="mb-4 text-sm">
+            {site.phone && (
+              <li>
+                <a href={site.phoneHref} className="inline-flex min-h-11 items-center gap-3 text-mist/75 transition-colors hover:text-gold-hi lg:min-h-9">
+                  <Phone className="size-4 text-gold" aria-hidden="true" />
+                  {site.phone}
+                </a>
+              </li>
+            )}
+            {site.email && (
+              <li>
+                <a href={`mailto:${site.email}`} className="inline-flex min-h-11 items-center gap-3 break-all text-mist/75 transition-colors hover:text-gold-hi lg:min-h-9">
+                  <Mail className="size-4 shrink-0 text-gold" aria-hidden="true" />
+                  {site.email}
+                </a>
+              </li>
+            )}
+          </ul>
           <a
             href={site.instagram.url}
             target="_blank"

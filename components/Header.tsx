@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useLenis } from "lenis/react";
-import { ArrowUpRight, MapPin } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import Logo from "./ui/Logo";
@@ -89,9 +89,21 @@ export default function Header() {
               {site.region} · <span lang="en">Since {site.founded}</span>
             </span>
             <div className="flex items-center gap-7">
-              <span className="font-serif text-sm tracking-[0.08em] normal-case italic text-gold/90">
+              <span className="hidden font-serif text-sm tracking-[0.08em] normal-case italic text-gold/90 xl:inline">
                 {site.slogan}
               </span>
+              {site.phone && (
+                <a href={site.phoneHref} className="flex h-10 items-center gap-2 transition-colors hover:text-gold">
+                  <Phone className="size-3.5 text-gold" aria-hidden="true" />
+                  {site.phone}
+                </a>
+              )}
+              {site.email && (
+                <a href={`mailto:${site.email}`} className="hidden h-10 items-center gap-2 normal-case tracking-[0.08em] transition-colors hover:text-gold lg:flex">
+                  <Mail className="size-3.5 text-gold" aria-hidden="true" />
+                  {site.email}
+                </a>
+              )}
               <a
                 href={site.instagram.url}
                 target="_blank"
@@ -220,7 +232,14 @@ export default function Header() {
               animate={{ opacity: 1, transition: { delay: 0.7 } }}
               exit={{ opacity: 0 }}
             >
-              <span>{site.region}</span>
+              {site.phone ? (
+                <a href={site.phoneHref} className="flex min-h-11 items-center gap-2 text-ivory">
+                  <Phone className="size-4 text-gold" aria-hidden="true" />
+                  {site.phone}
+                </a>
+              ) : (
+                <span>{site.region}</span>
+              )}
               <a
                 href={site.instagram.url}
                 target="_blank"

@@ -54,6 +54,8 @@ const jsonLd = {
   foundingDate: String(site.founded),
   areaServed: { "@type": "City", name: site.city },
   address: { "@type": "PostalAddress", addressLocality: site.city, addressCountry: "TR" },
+  telephone: "+90 532 630 46 77",
+  email: site.email,
   sameAs: [site.instagram.url],
   slogan: site.slogan,
   description: site.description,

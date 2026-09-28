@@ -16,10 +16,10 @@ export const site = {
     url: "https://www.instagram.com/aras.insaatt/",
     handle: "@aras.insaatt",
   },
-  // Müşteriden gelince doldurun; boş kalanlar sitede gösterilmez.
-  phone: "" as string,
-  phoneHref: "" as string,
-  email: "" as string,
+  // Boş kalan alanlar sitede gösterilmez.
+  phone: "0532 630 46 77",
+  phoneHref: "tel:+905326304677",
+  email: "erbakanaras@gmail.com",
   address: "" as string,
   description:
     "ARAS İNŞAAT, 1994'ten bu yana Ankara genelinde konut ve villa projeleri, A'dan Z'ye anahtar teslim iç mimari ve dekorasyon işleri yapan köklü bir inşaat firmasıdır.",
