@@ -75,7 +75,7 @@ export default function Footer({ base = "" }: { base?: string }) {
       </div>
 
       <div className="border-t border-white/5">
-        <div className="container-lux flex flex-col items-center justify-between gap-4 py-7 pb-[max(1.75rem,env(safe-area-inset-bottom))] text-xs tracking-[0.12em] text-stone sm:flex-row">
+        <div className="container-lux flex flex-col items-center justify-between gap-4 py-7 text-xs tracking-[0.12em] text-stone sm:flex-row">
           <p className="flex flex-col items-center gap-1 sm:flex-row sm:gap-4">
             <span>© {year} {site.name}. Tüm hakları saklıdır.</span>
             <a href="/kvkk" className="inline-flex min-h-11 items-center transition-colors hover:text-gold sm:min-h-0">
@@ -94,6 +94,22 @@ export default function Footer({ base = "" }: { base?: string }) {
       <p className="pointer-events-none -mb-[3vw] select-none text-center font-serif text-[22vw] leading-none font-light tracking-[0.1em] text-white/[0.025]" aria-hidden="true">
         ARAS
       </p>
+
+      {/* Tasarım imzası — en alt satır */}
+      <div className="relative z-10 border-t border-white/5 bg-anthracite">
+        <p className="container-lux py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-center text-[0.7rem] tracking-[0.12em] text-stone">
+          Bu site{" "}
+          <a
+            href="https://weblift.tr/"
+            target="_blank"
+            rel="noopener"
+            className="font-semibold text-mist/80 transition-colors hover:text-gold-hi"
+          >
+            weblift.tr
+          </a>{" "}
+          tarafından tasarlanmıştır.
+        </p>
+      </div>
     </footer>
   );
 }

@@ -112,6 +112,7 @@ Kontrol genişlikleri: **1440 · 1024 · 768 · 375 · 320**. 375px'te yatay kay
 - "Hareketi azalt": `MotionConfig reducedMotion="user"` global; Lenis bu durumda kapalı. Yeni CSS animasyonlarını `motion-safe:` ile yaz.
 - Erişilebilirlik: dekoratif ikon/görsel `aria-hidden` / `alt=""`; butonlarda anlamlı etiket; `:focus-visible` stilini bozma.
 - Harici link: `target="_blank" rel="noopener noreferrer"`.
+- **Tasarım imzası:** footer'ın en alt satırında "Bu site weblift.tr tarafından tasarlanmıştır." (https://weblift.tr/ linkli) her zaman bulunur; kaldırma. `rel="noopener"` (noreferrer yok, weblift.tr yönlendirmeyi görebilsin).
 
 ## İletişim formu
 
