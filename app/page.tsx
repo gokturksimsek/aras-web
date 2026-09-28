@@ -4,6 +4,7 @@ import About from "@/components/About";
 import Marquee from "@/components/Marquee";
 import Services from "@/components/Services";
 import Projects from "@/components/Projects";
+import References from "@/components/References";
 import CtaBand from "@/components/CtaBand";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -19,6 +20,7 @@ export default function Home() {
         <Marquee />
         <Services />
         <Projects />
+        <References />
         <CtaBand />
         <Contact />
       </main>

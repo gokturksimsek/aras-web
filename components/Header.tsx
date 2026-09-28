@@ -135,7 +135,7 @@ export default function Header() {
             <Logo compact={scrolled} />
 
             <nav aria-label="Ana menü" className="hidden xl:block">
-              <ul className="flex items-center gap-10">
+              <ul className="flex items-center gap-7 2xl:gap-10">
                 {nav.map((n) => (
                   <li key={n.href}>
                     <a

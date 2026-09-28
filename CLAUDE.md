@@ -54,6 +54,7 @@ components/
   Services.tsx          Uzmanlıklarımız: genişleyen paneller (≥1280) / kartlar
   Marquee.tsx           Kayan uzmanlık şeridi
   Projects.tsx          Projeler: filtreli masonry galeri + lightbox
+  References.tsx        Referanslar: iş ortağı kartları + kayan marka şeritleri
   CtaBand.tsx           Paralaks görselli çağrı bandı
   CallButton.tsx        Mobilde sabit "Hemen Ara" butonu
   Contact.tsx           İletişim bilgileri + form
@@ -65,6 +66,7 @@ lib/
   images.ts             Görsel URL'leri (Unsplash yer tutucular)
   kvkk.ts               KVKK aydınlatma metni (genel şablon — hukuki kontrol önerilir)
 public/img/             aras-logo.png (tam logo), aras-logo-mark.png (yalnızca altıgen), şeffaf zeminli
+public/img/referanslar/ Referans logoları (tek renkli maske, bkz. aşağı)
 ARAS logo.png           Müşteriden gelen orijinal logo — silme
 ```
 
@@ -95,6 +97,14 @@ Yıllık tecrübe sayısı `new Date().getFullYear() - 1994` ile hesaplanır; el
 - Hareketler `ease-lux` eğrisiyle (`[0.22, 1, 0.36, 1]`), yavaş ve akıcı (0.6–1.4 sn). Zıplama/dönme yok.
 - **Uydurma içerik yok:** sahte istatistik ("500+ proje"), sahte referans/müşteri adı, uydurma ödül/sertifika, sahte telefon/adres ekleme. Müşteriden gelmeyen bilgi siteye girmez.
 - Görseller şu an **Unsplash yer tutucularıdır** (`lib/images.ts`). Proje adları bu yüzden genel ("Modern Villa" vb.). Gerçek proje fotoğrafları gelince `public/img/projeler/` altına koyup `lib/images.ts`'i güncelle.
+
+## Referanslar
+
+- Veri: `lib/site.ts` → `references` (`partners`: iş ortakları, `brands`: uygulamalarda kullanılan malzeme markaları). İkisi ayrı başlıkta durur; malzeme markaları "müşteri" gibi gösterilmez.
+- Logolar **markaların resmî sitelerinden** alındı, elle çizilmedi. Şekli bozulmadan tek renkli (beyaz, şeffaf zeminli) maskeye çevrildi; sitede CSS `mask-image` ile fildişi, üzerine gelince gold boyanır. Rozet biçimli logolarda (Marshall, Filli Boya) yalnızca rozet içindeki yazı alındı; Jotun'da yalnızca lacivert yazı + amblem (`jotun.svg`).
+- Yeni logo eklerken: şeffaf PNG/SVG al → beyaz siluet yap → `public/img/referanslar/` → `ratio` (en/boy) yaz; ince çizgili logolara `scale` ver.
+- **Artı Grup** bağlantısı kapalı: sitelerinin SSL sertifikası süresi dolmuş (Eylül 2026). Yenilenince `url` alanını doldur.
+- Bölüm sırası: Kurumsal 01 · Uzmanlıklar 02 · Projeler 03 · Referanslar 04 · İletişim 05.
 
 ## Duyarlı tasarım
 
@@ -157,6 +167,7 @@ Vercel önerilir (Next.js'in yerel ortamı). Ortam değişkenlerini Vercel panel
 - [ ] KVKK metnini hukukçuya kontrol ettir (`lib/kvkk.ts`)
 - [ ] Alan adı kesinleşince `robots.ts` + `sitemap.ts`
 - [ ] Logo vektör (SVG) hâli gelirse PNG'lerin yerine koy
+- [ ] Artı Grup SSL sertifikasını yenileyince referans kartına bağlantıyı aç
 
 <!-- BEGIN:nextjs-agent-rules -->
 

@@ -115,7 +115,7 @@ export default function Contact() {
         {/* Sol: bilgiler */}
         <div className="lg:col-span-5">
           <SectionHeading
-            no="04"
+            no="05"
             eyebrow="İletişim"
             title={["Projenizi", <span key="t" className="gold-text italic">dinleyelim.</span>]}
           />

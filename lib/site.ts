@@ -30,6 +30,7 @@ export const nav = [
   { href: "#kurumsal", label: "Kurumsal" },
   { href: "#uzmanliklar", label: "Uzmanlıklarımız" },
   { href: "#projeler", label: "Projelerimiz" },
+  { href: "#referanslar", label: "Referanslar" },
   { href: "#iletisim", label: "İletişim" },
 ] as const;
 
@@ -95,6 +96,49 @@ export const services = [
     topic: "Dekoratif Uygulamalar",
   },
 ] as const;
+
+// Referanslar. Logolar markaların resmî sitelerinden alındı ve tek renkli maskeye
+// çevrildi (public/img/referanslar). ratio = logonun en/boy oranı (boyut dengeleme için);
+// scale = ince çizgili logolar için göz kararı büyütme.
+export const references = {
+  intro:
+    "Kuruluşumuzdan bu yana büyük firmalarla iş ortaklıklarına imza attık. Projelerimizde yalnızca kalitesine güvendiğimiz markaları kullanıyoruz.",
+  partners: [
+    {
+      name: "Artı Grup",
+      city: "Ankara",
+      logo: "/img/referanslar/arti-grup.png",
+      ratio: 4.139,
+      // Sitenin SSL sertifikası süresi dolmuş (Eylül 2026); tarayıcı uyarı verdiği için
+      // bağlantı kapalı. Sertifika yenilenince: "https://www.artigrupinsaat.com.tr/"
+      url: "",
+    },
+    {
+      name: "Yıldırım Grup",
+      city: "Ankara",
+      logo: "/img/referanslar/yildirim-grup.png",
+      ratio: 4.846,
+      url: "https://yildirimgrup.com.tr/",
+    },
+    {
+      name: "Enam İnşaat",
+      city: "Ankara",
+      logo: "/img/referanslar/enam.png",
+      ratio: 4.036,
+      url: "https://enam.com.tr/",
+    },
+  ],
+  brands: [
+    { name: "Albera Boya", logo: "/img/referanslar/albera.png", ratio: 1.658, scale: 1.2 },
+    { name: "Bien Seramik", logo: "/img/referanslar/bien.png", ratio: 2.52 },
+    { name: "Jotun", logo: "/img/referanslar/jotun.svg", ratio: 4.424 },
+    { name: "Filli Boya", logo: "/img/referanslar/filli-boya.png", ratio: 1.446, scale: 1.25 },
+    { name: "Marshall", logo: "/img/referanslar/marshall.png", ratio: 2.205, scale: 1.15 },
+    { name: "Kale Seramik", logo: "/img/referanslar/kale.png", ratio: 2.988 },
+    { name: "DYO", logo: "/img/referanslar/dyo.png", ratio: 1.91 },
+    { name: "Polisan", logo: "/img/referanslar/polisan.png", ratio: 3.713 },
+  ],
+};
 
 export const marquee = [
   "Villa Projeleri",
