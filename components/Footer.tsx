@@ -3,7 +3,8 @@ import { ArrowUp, Mail, Phone } from "lucide-react";
 import InstagramIcon from "./ui/InstagramIcon";
 import { nav, services, site } from "@/lib/site";
 
-export default function Footer() {
+// base: alt sayfalarda "/" verilir ki bağlantılar anasayfadaki bölümlere gitsin.
+export default function Footer({ base = "" }: { base?: string }) {
   const year = new Date().getFullYear();
 
   return (
@@ -21,7 +22,7 @@ export default function Footer() {
           <ul className="text-sm">
             {nav.map((n) => (
               <li key={n.href}>
-                <a href={n.href} className="inline-flex min-h-11 items-center text-mist/75 transition-colors hover:text-gold-hi lg:min-h-9">{n.label}</a>
+                <a href={`${base}${n.href}`} className="inline-flex min-h-11 items-center text-mist/75 transition-colors hover:text-gold-hi lg:min-h-9">{n.label}</a>
               </li>
             ))}
           </ul>
@@ -32,7 +33,7 @@ export default function Footer() {
           <ul className="text-sm">
             {services.map((s) => (
               <li key={s.id}>
-                <a href="#uzmanliklar" className="inline-flex min-h-11 items-center text-mist/75 transition-colors hover:text-gold-hi lg:min-h-9">{s.title}</a>
+                <a href={`${base}#uzmanliklar`} className="inline-flex min-h-11 items-center text-mist/75 transition-colors hover:text-gold-hi lg:min-h-9">{s.title}</a>
               </li>
             ))}
           </ul>
@@ -75,9 +76,14 @@ export default function Footer() {
 
       <div className="border-t border-white/5">
         <div className="container-lux flex flex-col items-center justify-between gap-4 py-7 pb-[max(1.75rem,env(safe-area-inset-bottom))] text-xs tracking-[0.12em] text-stone sm:flex-row">
-          <p>© {year} {site.name}. Tüm hakları saklıdır.</p>
+          <p className="flex flex-col items-center gap-1 sm:flex-row sm:gap-4">
+            <span>© {year} {site.name}. Tüm hakları saklıdır.</span>
+            <a href="/kvkk" className="inline-flex min-h-11 items-center transition-colors hover:text-gold sm:min-h-0">
+              KVKK Aydınlatma Metni
+            </a>
+          </p>
           <p className="font-serif text-sm italic text-gold/80">{site.slogan} · <span lang="en">Since {site.founded}</span></p>
-          <a href="#anasayfa" className="group flex min-h-11 items-center gap-2 uppercase transition-colors hover:text-gold" aria-label="Sayfanın başına dön">
+          <a href={base ? "#sayfa-basi" : "#anasayfa"} className="group flex min-h-11 items-center gap-2 uppercase transition-colors hover:text-gold" aria-label="Sayfanın başına dön">
             Yukarı
             <ArrowUp className="size-4 transition-transform duration-500 group-hover:-translate-y-1" aria-hidden="true" />
           </a>

@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Opening />
-      <main>
+      <main id="icerik">
         <Manifesto />
         <About />
         <Marquee />

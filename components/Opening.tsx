@@ -12,8 +12,14 @@ export default function Opening() {
   const reduce = useReducedMotion();
   const [loading, setLoading] = useState(true);
 
+  // Perde oturum başına bir kez uzun gösterilir; sonraki girişlerde hemen kalkar.
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), reduce ? 0 : 2100);
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem("aras-intro") === "1";
+      sessionStorage.setItem("aras-intro", "1");
+    } catch {}
+    const t = setTimeout(() => setLoading(false), reduce ? 0 : seen ? 350 : 2100);
     return () => clearTimeout(t);
   }, [reduce]);
 

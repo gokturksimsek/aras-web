@@ -2,9 +2,17 @@ import Image from "next/image";
 import clsx from "clsx";
 
 // Header logosu: altıgen işaret (müşterinin logo dosyasından) + kurumsal yazı.
-export default function Logo({ className, compact = false }: { className?: string; compact?: boolean }) {
+export default function Logo({
+  className,
+  compact = false,
+  href = "#anasayfa",
+}: {
+  className?: string;
+  compact?: boolean;
+  href?: string;
+}) {
   return (
-    <a href="#anasayfa" className={clsx("group flex items-center gap-3", className)} aria-label="ARAS İNŞAAT — Anasayfa">
+    <a href={href} className={clsx("group flex items-center gap-3", className)} aria-label="ARAS İNŞAAT — Anasayfa">
       <Image
         src="/img/aras-logo-mark.png"
         alt=""

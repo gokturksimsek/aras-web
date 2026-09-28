@@ -65,6 +65,7 @@ export const services = [
     text: "Projenin ilk çiziminden anahtarın teslimine kadar tüm süreci tek elden yönetiyoruz. Siz yalnızca yeni yaşam alanınızın keyfini çıkarın.",
     icon: "KeyRound",
     image: "turnkey",
+    topic: "Anahtar Teslim İç Mimari",
   },
   {
     id: "ince-iscilik",
@@ -73,6 +74,7 @@ export const services = [
     text: "Kaba inşaat sonrasındaki tüm ince işleri profesyonel ekibimizle, milimetrik bir titizlikle uyguluyoruz. Kalıcı kaliteyi detaylarda arıyoruz.",
     icon: "Ruler",
     image: "finework",
+    topic: "İnce İşçilik",
   },
   {
     id: "villa-konut",
@@ -81,6 +83,7 @@ export const services = [
     text: "Ankara genelinde, yaşayanların ihtiyaçlarına göre şekillenen; estetik, konforlu ve uzun ömürlü villa ve konut projeleri hayata geçiriyoruz.",
     icon: "House",
     image: "villa",
+    topic: "Villa Projesi",
   },
   {
     id: "dekoratif",
@@ -89,6 +92,7 @@ export const services = [
     text: "İç mimari ve dekorasyonda yüzey, tavan ve duvar uygulamalarından özel detaylara kadar mekâna karakter katan dokunuşlar tasarlıyoruz.",
     icon: "PaintRoller",
     image: "decor",
+    topic: "Dekoratif Uygulamalar",
   },
 ] as const;
 
@@ -100,6 +104,11 @@ export const marquee = [
   "İnce İşçilik",
   "Dekorasyon",
 ];
+
+// Hizmet kartındaki "Bilgi Alın" tıklanınca formdaki Konu'yu seçer.
+export const TOPIC_EVENT = "aras:konu";
+export const selectTopic = (topic: string) =>
+  window.dispatchEvent(new CustomEvent(TOPIC_EVENT, { detail: topic }));
 
 export const contactTopics = [
   "Villa Projesi",

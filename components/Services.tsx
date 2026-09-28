@@ -7,7 +7,7 @@ import { useState } from "react";
 import clsx from "clsx";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
-import { services } from "@/lib/site";
+import { selectTopic, services } from "@/lib/site";
 import { img } from "@/lib/images";
 
 const icons = { KeyRound, Ruler, House, PaintRoller };
@@ -108,6 +108,7 @@ export default function Services() {
                         <p className="max-w-md text-[0.95rem] leading-relaxed text-mist/85">{s.text}</p>
                         <a
                           href="#iletisim"
+                          onClick={() => selectTopic(s.topic)}
                           className="mt-4 inline-flex min-h-11 items-center gap-2 text-[0.68rem] font-semibold tracking-[0.26em] text-gold uppercase transition-colors hover:text-gold-hi"
                         >
                           Bilgi Alın <ArrowUpRight className="size-4" aria-hidden="true" />
@@ -143,8 +144,15 @@ export default function Services() {
                     <Icon className="mb-4 size-6 text-gold" strokeWidth={1.4} aria-hidden="true" />
                     <h3 className="font-serif text-[1.9rem] leading-tight font-light text-ivory">{s.title}</h3>
                     <p className="mt-4 text-[0.95rem] leading-relaxed text-mist/75">{s.text}</p>
+                    <a
+                      href="#iletisim"
+                      onClick={() => selectTopic(s.topic)}
+                      className="mt-auto inline-flex min-h-11 items-center gap-2 pt-4 text-[0.68rem] font-semibold tracking-[0.26em] text-gold uppercase transition-colors hover:text-gold-hi"
+                    >
+                      Bilgi Alın <ArrowUpRight className="size-4" aria-hidden="true" />
+                    </a>
                     <motion.span
-                      className="mt-6 block h-px origin-left bg-gold/60"
+                      className="mt-4 block h-px origin-left bg-gold/60"
                       initial={{ scaleX: 0 }}
                       whileInView={{ scaleX: 1 }}
                       viewport={{ once: true }}

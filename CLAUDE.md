@@ -39,7 +39,9 @@ app/
   layout.tsx            Fontlar, metadata, JSON-LD, SmoothScroll sarmalayıcı
   page.tsx              Tek sayfa: bölümleri sırayla dizer
   globals.css           Tailwind + @theme renk/font değişkenleri + ortak yardımcı sınıflar
-  icon.png              Favicon (logodan üretildi)
+  icon.png, apple-icon.png  Favicon ve iOS ana ekran simgesi (logodan üretildi)
+  kvkk/page.tsx         KVKK Aydınlatma Metni sayfası (metin: lib/kvkk.ts)
+  not-found.tsx         Markaya uygun 404 sayfası
   api/iletisim/route.ts İletişim formu uç noktası
 components/
   SmoothScroll.tsx      Lenis + Motion'un "hareketi azalt" ayarı
@@ -54,11 +56,13 @@ components/
   CtaBand.tsx           Paralaks görselli çağrı bandı
   CallButton.tsx        Mobilde sabit "Hemen Ara" butonu
   Contact.tsx           İletişim bilgileri + form
-  Footer.tsx
+  Footer.tsx            `base="/"` verilirse bağlantılar alt sayfadan anasayfaya gider
+  PageShell.tsx         Alt sayfa iskeleti (logo + Anasayfaya Dön + footer)
   ui/                   Reveal, SectionHeading, Counter, InstagramIcon, Logo
 lib/
   site.ts               **Firma bilgileri ve tüm içerik verisi (tek doğru kaynak)**
   images.ts             Görsel URL'leri (Unsplash yer tutucular)
+  kvkk.ts               KVKK aydınlatma metni (genel şablon — hukuki kontrol önerilir)
 public/img/             aras-logo.png (tam logo), aras-logo-mark.png (yalnızca altıgen), şeffaf zeminli
 ARAS logo.png           Müşteriden gelen orijinal logo — silme
 ```
@@ -112,8 +116,16 @@ Kontrol genişlikleri: **1440 · 1024 · 768 · 375 · 320**. 375px'te yatay kay
 ## İletişim formu
 
 `POST /api/iletisim` → sunucuda doğrulama → `RESEND_API_KEY` ve `CONTACT_TO_EMAIL` ortam değişkenleri tanımlıysa Resend API ile e-posta gönderir.
-Tanımlı değilse **503 döner** ve form ziyaretçiye Instagram'dan ulaşmasını söyler (sahte "gönderildi" mesajı gösterilmez).
+Tanımlı değilse **503 döner**; form bu durumda ziyaretçinin e-posta uygulamasını mesaj hazır şekilde (`site.email` adresine) açar. Sahte "gönderildi" mesajı gösterilmez.
+- Hizmet kartlarındaki "Bilgi Alın", `selectTopic()` ile formdaki Konu'yu otomatik seçer (`lib/site.ts` → `services[].topic`).
+- KVKK onay kutusu `/kvkk` sayfasına bağlanır.
 `.env.local` örneği için `.env.example`'a bak.
+
+## Güvenlik ve erişilebilirlik
+
+- `next.config.ts`: güvenlik başlıkları (nosniff, X-Frame-Options, Referrer-Policy, Permissions-Policy, HSTS), `X-Powered-By` kapalı.
+- Klavye kullanıcıları için "İçeriğe geç" bağlantısı (`#icerik`).
+- Açılış perdesi oturum başına bir kez uzun gösterilir (`sessionStorage`).
 
 ## Çalıştırma
 
@@ -132,7 +144,9 @@ Vercel önerilir (Next.js'in yerel ortamı). Ortam değişkenlerini Vercel panel
 - [ ] Açık adres → `lib/site.ts`
 - [ ] Gerçek proje fotoğrafları → galeri ve hizmet görselleri
 - [ ] Alan adı kesinleşince `metadataBase` + OG görseli
-- [ ] Form için Resend (veya benzeri) hesabı + KVKK aydınlatma metni sayfası
+- [ ] Form için Resend (veya benzeri) hesabı → `.env`
+- [ ] KVKK metnini hukukçuya kontrol ettir (`lib/kvkk.ts`)
+- [ ] Alan adı kesinleşince `robots.ts` + `sitemap.ts`
 - [ ] Logo vektör (SVG) hâli gelirse PNG'lerin yerine koy
 
 <!-- BEGIN:nextjs-agent-rules -->

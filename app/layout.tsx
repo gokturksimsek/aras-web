@@ -65,6 +65,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="tr" className={`${cormorant.variable} ${manrope.variable}`}>
       <body>
+        <a
+          href="#icerik"
+          className="fixed left-4 top-4 z-[200] -translate-y-24 bg-gold px-5 py-3 text-xs font-semibold tracking-[0.2em] text-ink uppercase transition-transform focus:translate-y-0"
+        >
+          İçeriğe geç
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

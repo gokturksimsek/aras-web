@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useRef } from "react";
-import { manifesto } from "@/lib/site";
+import { manifesto, site } from "@/lib/site";
 
 // Kaydırdıkça kelime kelime aydınlanan manifesto metni.
 function Word({ children, range, progress }: { children: string; range: [number, number]; progress: MotionValue<number> }) {
@@ -25,7 +25,7 @@ export default function Manifesto() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 flex items-center gap-4">
             <span className="h-px w-12 bg-gold/60" aria-hidden="true" />
-            <span className="eyebrow">Özenle ve Güvenle</span>
+            <span className="eyebrow">{site.slogan}</span>
           </div>
           <p
             ref={ref}

@@ -2,18 +2,39 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Check, LoaderCircle, Mail, MapPin, Phone, Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 import InstagramIcon from "./ui/InstagramIcon";
-import { contactTopics, site } from "@/lib/site";
+import { TOPIC_EVENT, contactTopics, site } from "@/lib/site";
 
-type Status = "idle" | "sending" | "ok" | "unavailable" | "error";
+type Status = "idle" | "sending" | "ok" | "mailto" | "error";
+
+// E-posta servisi bağlı değilken: ziyaretçinin e-posta uygulamasını mesaj hazır açar.
+function openMailDraft(d: Record<string, string>) {
+  const lines = [
+    `Ad Soyad: ${d.name}`,
+    d.phone ? `Telefon: ${d.phone}` : "",
+    d.email ? `E-posta: ${d.email}` : "",
+    d.topic ? `Konu: ${d.topic}` : "",
+  ].filter(Boolean);
+  const body = [...lines, "", d.message].join("\n");
+  const subject = `Web sitesi: ${d.topic || "Bilgi talebi"} — ${d.name}`;
+  window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [topic, setTopic] = useState("");
+
+  // Hizmet kartlarından gelen konu seçimi
+  useEffect(() => {
+    const on = (e: Event) => setTopic((e as CustomEvent<string>).detail);
+    window.addEventListener(TOPIC_EVENT, on);
+    return () => window.removeEventListener(TOPIC_EVENT, on);
+  }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -40,14 +61,18 @@ export default function Contact() {
       if (res.ok) {
         setStatus("ok");
         form.reset();
-      } else setStatus(res.status === 503 ? "unavailable" : "error");
+        setTopic("");
+      } else if (res.status === 503 && site.email) {
+        openMailDraft(data);
+        setStatus("mailto");
+      } else setStatus("error");
     } catch {
       setStatus("error");
     }
   }
 
   const info = [
-    { icon: MapPin, label: "Hizmet Bölgesi", value: `${site.region}, merkez ${site.city}` },
+    { icon: MapPin, label: "Merkez · Hizmet Bölgesi", value: `${site.city} · ${site.region}` },
     site.phone && { icon: Phone, label: "Telefon", value: site.phone, href: site.phoneHref },
     site.email && { icon: Mail, label: "E-posta", value: site.email, href: `mailto:${site.email}` },
   ].filter(Boolean) as { icon: typeof MapPin; label: string; value: string; href?: string }[];
@@ -125,7 +150,7 @@ export default function Contact() {
               <Field label="E-posta" name="email" type="email" error={errors.email} autoComplete="email" />
               <label className="block">
                 <span className="text-[0.62rem] font-semibold tracking-[0.28em] text-stone uppercase">Konu</span>
-                <select name="topic" defaultValue="" className="field cursor-pointer appearance-none bg-[length:12px] bg-[right_center] bg-no-repeat [&>option]:bg-anthracite" style={{ backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23d3a971' stroke-width='1.2'/></svg>\")" }}>
+                <select name="topic" value={topic} onChange={(e) => setTopic(e.target.value)} className="field cursor-pointer appearance-none bg-[length:12px] bg-[right_center] bg-no-repeat [&>option]:bg-anthracite" style={{ backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23d3a971' stroke-width='1.2'/></svg>\")" }}>
                   <option value="" disabled>Seçiniz</option>
                   {contactTopics.map((t) => (
                     <option key={t}>{t}</option>
@@ -143,7 +168,12 @@ export default function Contact() {
                   <span className="mt-0.5 grid size-5 shrink-0 place-items-center border border-gold/60 text-transparent transition-colors peer-checked:bg-gold peer-checked:text-ink peer-focus-visible:ring-1 peer-focus-visible:ring-gold">
                     <Check className="size-3.5" strokeWidth={3} aria-hidden="true" />
                   </span>
-                  Kişisel verilerimin, talebime dönüş yapılması amacıyla işlenmesini kabul ediyorum.
+                  <span>
+                    <a href="/kvkk" target="_blank" className="text-gold underline decoration-gold/40 underline-offset-4 hover:decoration-gold">
+                      KVKK Aydınlatma Metni
+                    </a>
+                    &apos;ni okudum; kişisel verilerimin talebime dönüş yapılması amacıyla işlenmesini kabul ediyorum.
+                  </span>
                 </label>
                 {errors.kvkk && <p className="mt-2 text-xs text-gold-hi" role="alert">{errors.kvkk}</p>}
               </div>
@@ -167,16 +197,20 @@ export default function Contact() {
                       className={clsx("text-sm leading-relaxed", status === "ok" ? "text-gold-hi" : "text-mist/80")}
                     >
                       {status === "ok" && "Teşekkürler! Mesajınız bize ulaştı, en kısa sürede dönüş yapacağız."}
-                      {status === "unavailable" && (
+                      {status === "mailto" && (
                         <>
-                          Form şu an bakımda. Lütfen bizi{" "}
-                          <a href={site.phoneHref} className="text-gold underline underline-offset-4">{site.phone}</a>{" "}
-                          numarasından arayın ya da{" "}
-                          <a href={`mailto:${site.email}`} className="text-gold underline underline-offset-4">e-posta</a>{" "}
-                          gönderin.
+                          E-posta uygulamanız mesajınız hazır şekilde açıldı; göndermeniz yeterli. Açılmadıysa bize{" "}
+                          <a href={site.phoneHref} className="whitespace-nowrap text-gold underline underline-offset-4">{site.phone}</a>{" "}
+                          numarasından ulaşabilirsiniz.
                         </>
                       )}
-                      {status === "error" && "Bir sorun oluştu. Lütfen tekrar deneyin."}
+                      {status === "error" && (
+                        <>
+                          Mesajınız iletilemedi. Lütfen tekrar deneyin ya da{" "}
+                          <a href={site.phoneHref} className="whitespace-nowrap text-gold underline underline-offset-4">{site.phone}</a>{" "}
+                          numarasından bize ulaşın.
+                        </>
+                      )}
                     </motion.p>
                   )}
                 </AnimatePresence>
