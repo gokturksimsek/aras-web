@@ -21,6 +21,7 @@ Bir değişiklik yapmadan önce oku; kural değişirse bu dosyayı da güncelle.
 | Motion (eski adıyla Framer Motion) | 13 | `import { motion } from "motion/react"` |
 | Lenis | 1.3 | Yumuşak kaydırma (`lenis/react`) |
 | lucide-react | 1.48 | Arayüz ikonları. Marka ikonu içermez. |
+| nodemailer | 10 | İletişim formu SMTP gönderimi (`app/api/iletisim/route.ts`) |
 | simple-icons | 16 | **Marka ikonları** (Instagram). Marka logosu elle çizilmez. |
 | next/font | – | **Cormorant Garamond** (serif başlık), **Manrope** (sans metin). `latin-ext` alt kümesi Türkçe karakterler için zorunlu. |
 
@@ -114,13 +115,19 @@ Kontrol genişlikleri: **1440 · 1024 · 768 · 375 · 320**. 375px'te yatay kay
 - Harici link: `target="_blank" rel="noopener noreferrer"`.
 - **Tasarım imzası:** footer'ın en alt satırında "Bu site weblift.tr tarafından tasarlanmıştır." (https://weblift.tr/ linkli) her zaman bulunur; kaldırma. `rel="noopener"` (noreferrer yok, weblift.tr yönlendirmeyi görebilsin).
 
-## İletişim formu
+## İletişim formu (e-posta gönderimi)
 
-`POST /api/iletisim` → sunucuda doğrulama → `RESEND_API_KEY` ve `CONTACT_TO_EMAIL` ortam değişkenleri tanımlıysa Resend API ile e-posta gönderir.
-Tanımlı değilse **503 döner**; form bu durumda ziyaretçinin e-posta uygulamasını mesaj hazır şekilde (`site.email` adresine) açar. Sahte "gönderildi" mesajı gösterilmez.
+Mesajlar `site.email` (**erbakanaras@gmail.com**) adresine gider. Gönderim katmanları, sırasıyla:
+
+1. **Gmail SMTP — önerilen.** `SMTP_USER` + `SMTP_PASS` tanımlıysa `POST /api/iletisim` nodemailer ile gönderir. `SMTP_PASS` normal şifre değil, Google'ın 16 haneli **Uygulama Şifresi**dir (2 Adımlı Doğrulama açık olmalı). Şifreyi yalnızca `.env.local` / Vercel ortam değişkenine yaz; asla koda veya commit'e koyma.
+2. **Resend** — `RESEND_API_KEY` tanımlıysa.
+3. **FormSubmit (kurulumsuz yedek)** — sunucuda yöntem yoksa (503) ya da gönderim hata verirse (502) form, tarayıcıdan `https://formsubmit.co/ajax/<site.email>` adresine gönderir. İlk gönderimde e-posta adresine tek seferlik **"Activate Form"** e-postası gelir; tıklanana kadar mesaj iletilmez. Yeni bir alan adında ilk gönderimde onay tekrar istenebilir.
+4. **Son çare:** ziyaretçinin e-posta uygulaması mesaj hazır açılır (`mailto:`).
+
+Sahte "gönderildi" mesajı gösterilmez; "Teşekkürler" yalnızca gerçek gönderim başarılıysa çıkar.
 - Hizmet kartlarındaki "Bilgi Alın", `selectTopic()` ile formdaki Konu'yu otomatik seçer (`lib/site.ts` → `services[].topic`).
 - KVKK onay kutusu `/kvkk` sayfasına bağlanır.
-`.env.local` örneği için `.env.example`'a bak.
+- Ortam değişkenleri için `.env.example`'a bak.
 
 ## Güvenlik ve erişilebilirlik
 
@@ -145,7 +152,8 @@ Vercel önerilir (Next.js'in yerel ortamı). Ortam değişkenlerini Vercel panel
 - [ ] Açık adres → `lib/site.ts`
 - [ ] Gerçek proje fotoğrafları → galeri ve hizmet görselleri
 - [ ] Alan adı kesinleşince `metadataBase` + OG görseli
-- [ ] Form için Resend (veya benzeri) hesabı → `.env`
+- [ ] Gmail Uygulama Şifresi → `.env.local` ve Vercel'e `SMTP_PASS` (form bunu kullanır; yoksa FormSubmit yedeği)
+- [ ] FormSubmit "Activate Form" e-postasını onayla (erbakanaras@gmail.com)
 - [ ] KVKK metnini hukukçuya kontrol ettir (`lib/kvkk.ts`)
 - [ ] Alan adı kesinleşince `robots.ts` + `sitemap.ts`
 - [ ] Logo vektör (SVG) hâli gelirse PNG'lerin yerine koy

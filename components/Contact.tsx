@@ -11,7 +11,33 @@ import { TOPIC_EVENT, contactTopics, site } from "@/lib/site";
 
 type Status = "idle" | "sending" | "ok" | "mailto" | "error";
 
-// E-posta servisi bağlı değilken: ziyaretçinin e-posta uygulamasını mesaj hazır açar.
+// Sunucuda gönderim yöntemi yoksa: FormSubmit ile tarayıcıdan doğrudan gönder.
+// İlk gönderimde site.email adresine tek seferlik "Activate Form" onay e-postası gelir.
+async function sendViaFormSubmit(d: Record<string, string>): Promise<boolean> {
+  try {
+    const res = await fetch(`https://formsubmit.co/ajax/${site.email}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        "Ad Soyad": d.name,
+        Telefon: d.phone || "—",
+        "E-posta": d.email || "—",
+        Konu: d.topic || "—",
+        Mesaj: d.message,
+        _subject: `Web sitesi: ${d.topic || "Bilgi talebi"} — ${d.name}`,
+        ...(d.email ? { _replyto: d.email } : {}),
+        _template: "table",
+        _captcha: "false",
+      }),
+    });
+    const json = (await res.json().catch(() => null)) as { success?: string | boolean } | null;
+    return res.ok && String(json?.success) === "true";
+  } catch {
+    return false;
+  }
+}
+
+// Son çare: ziyaretçinin e-posta uygulamasını mesaj hazır açar.
 function openMailDraft(d: Record<string, string>) {
   const lines = [
     `Ad Soyad: ${d.name}`,
@@ -58,14 +84,20 @@ export default function Contact() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (res.ok) {
+      const done = () => {
         setStatus("ok");
         form.reset();
         setTopic("");
-      } else if (res.status === 503 && site.email) {
+      };
+      if (res.ok) return done();
+      if (res.status === 422) return setStatus("error");
+      // 503 (sunucuda yöntem yok) veya 502 (gönderim hatası) → yedekler
+      if (site.email && (await sendViaFormSubmit(data))) return done();
+      if (site.email) {
         openMailDraft(data);
-        setStatus("mailto");
-      } else setStatus("error");
+        return setStatus("mailto");
+      }
+      setStatus("error");
     } catch {
       setStatus("error");
     }
