@@ -6,11 +6,13 @@ import { Quote } from "lucide-react";
 import { useRef } from "react";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
+import MoreLink from "./ui/MoreLink";
 import Counter from "./ui/Counter";
 import { about, site, yearsOfExperience } from "@/lib/site";
 import { img } from "@/lib/images";
 
-export default function About() {
+// more: anasayfa özetinde "Detaylı Bilgi" → /kurumsal
+export default function About({ no = "01", more = false }: { no?: string; more?: boolean }) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const mainY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
@@ -56,7 +58,7 @@ export default function About() {
         {/* Metin */}
         <div className="lg:col-span-6 lg:pl-8">
           <SectionHeading
-            no="01"
+            no={no}
             eyebrow={about.eyebrow}
             title={[about.title[0], <span key="t" className="gold-text italic">{about.title[1]}</span>]}
           />
@@ -85,6 +87,11 @@ export default function About() {
               </p>
             </div>
           </Reveal>
+          {more && (
+            <Reveal delay={0.2} className="mt-12">
+              <MoreLink href="/kurumsal">Detaylı Bilgi</MoreLink>
+            </Reveal>
+          )}
         </div>
       </div>
 

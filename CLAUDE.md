@@ -6,7 +6,7 @@ Bir değişiklik yapmadan önce oku; kural değişirse bu dosyayı da güncelle.
 ## Proje özeti
 
 - **Müşteri:** ARAS İNŞAAT — Ankara. Slogan (logodan): *Özenle ve Güvenle*.
-- **Amaç:** Lüks konut, villa ve iç mimari işlerini anlatan; antrasit + gold temalı, ihtişamlı, kurumsal tek sayfa tanıtım sitesi.
+- **Amaç:** Lüks konut, villa ve iç mimari işlerini anlatan; antrasit + gold temalı, ihtişamlı, kurumsal, **çok sayfalı** tanıtım sitesi (OBES düzeni: her bölüm kendi sayfasında).
 - **Referans:** https://farasinsaat.com/ — üst bilgi şeridi, hero üzerinde şeffaf header, manifesto metni, hakkımızda + yıl sayacı, hizmet kartları, proje listesi, iletişim formu. Bu düzen örnek alındı, kalite olarak aşılması hedeflendi.
 - **Dil:** Site metinleri Türkçe. Kod içi yorumlar Türkçe.
 
@@ -20,10 +20,13 @@ Bir değişiklik yapmadan önce oku; kural değişirse bu dosyayı da güncelle.
 | Tailwind CSS | 4.3 | `@tailwindcss/postcss`. Yapılandırma dosyası yok; tema `app/globals.css` → `@theme` içinde. |
 | Motion (eski adıyla Framer Motion) | 13 | `import { motion } from "motion/react"` |
 | Lenis | 1.3 | Yumuşak kaydırma (`lenis/react`) |
-| lucide-react | 1.48 | Arayüz ikonları. Marka ikonu içermez. |
+| lucide-react | 1.49 | Arayüz ikonları. Marka ikonu içermez. |
+| clsx | 2.1 | Koşullu `className` birleştirme (`import clsx from "clsx"`). |
 | nodemailer | 10 | İletişim formu SMTP gönderimi (`app/api/iletisim/route.ts`) |
+| three | 0.186 | 3D motoru. |
+| @react-three/fiber · drei · postprocessing | 9.8 · 10.7 · 3.1 | React içinde 3D sahneler (`components/three/`), yardımcılar, ışıma (Bloom). |
 | simple-icons | 16 | **Marka ikonları** (Instagram). Marka logosu elle çizilmez. |
-| next/font | – | **Cormorant Garamond** (serif başlık), **Manrope** (sans metin). `latin-ext` alt kümesi Türkçe karakterler için zorunlu. |
+| next/font | – | **farasinsaat.com ile aynı aile:** Helvetica (başlık + metin) + **Roboto Slab** (ikincil, gold vurgular). Helvetica web'e gömülemez: Apple'da sistem "Helvetica Neue", diğerlerinde **Inter Tight** yüklenir. `latin-ext` zorunlu. |
 
 Node.js 24 LTS gerekir (makineye `winget` ile kullanıcı kapsamında kuruldu).
 
@@ -38,7 +41,9 @@ Node.js 24 LTS gerekir (makineye `winget` ile kullanıcı kapsamında kuruldu).
 ```
 app/
   layout.tsx            Fontlar, metadata, JSON-LD, SmoothScroll sarmalayıcı
-  page.tsx              Tek sayfa: bölümleri sırayla dizer
+  layout.tsx            Ortak: Header, PageTransition (sayfa geçiş perdesi), Footer, CallButton
+  page.tsx              Anasayfa: 3D hero + bölüm özetleri ("Detaylı Bilgi" → ilgili sayfa)
+  kurumsal/ uzmanliklar/ projeler/ referanslar/ iletisim/   Alt sayfalar (PageHero + bölüm)
   globals.css           Tailwind + @theme renk/font değişkenleri + ortak yardımcı sınıflar
   icon.png, apple-icon.png  Favicon ve iOS ana ekran simgesi (logodan üretildi)
   kvkk/page.tsx         KVKK Aydınlatma Metni sayfası (metin: lib/kvkk.ts)
@@ -46,25 +51,30 @@ app/
   api/iletisim/route.ts İletişim formu uç noktası
 components/
   SmoothScroll.tsx      Lenis + Motion'un "hareketi azalt" ayarı
-  Opening.tsx           Açılış perdesi (logo + gold çizgi) + Header + Hero
-  Header.tsx            Üst şerit + yapışkan header + mobil tam ekran menü
-  Hero.tsx              Ken Burns zoom'lu görsel slayt + slogan
+  Opening.tsx           Açılış perdesi (yalnızca anasayfa, oturumda bir kez) + Hero
+  PageTransition.tsx    Site içi linkte perde kapanır (logo + sayfa adı), yeni sayfada açılır
+  PageHero.tsx          Alt sayfa başlık bandı: breadcrumb + başlık + kısa açıklama
+  Approach.tsx          Kurumsal → Yaklaşımımız (4 ilke)
+  Header.tsx            Üst şerit + yapışkan header + mobil menü; etkin link pathname'den. Kaydırınca opak (yazı binmez)
+  Hero.tsx              3D villa maketi (WebGL yoksa fotoğraf) + slogan
   Manifesto.tsx         Kaydırdıkça kelime kelime aydınlanan metin
   About.tsx             Kurumsal: kurucu, 1994, yıl sayacı
   Services.tsx          Uzmanlıklarımız: genişleyen paneller (≥1280) / kartlar
   Marquee.tsx           Kayan uzmanlık şeridi
+  Scope.tsx             Anahtar teslim kapsamı: sabit 3D sahne + kaydırdıkça ilerleyen 43 iş kalemi
   Projects.tsx          Projeler: filtreli masonry galeri + lightbox
   References.tsx        Referanslar: iş ortağı kartları + kayan marka şeritleri
   CtaBand.tsx           Paralaks görselli çağrı bandı
   CallButton.tsx        Mobilde sabit "Hemen Ara" butonu
   Contact.tsx           İletişim bilgileri + form
-  Footer.tsx            `base="/"` verilirse bağlantılar alt sayfadan anasayfaya gider
-  PageShell.tsx         Alt sayfa iskeleti (logo + Anasayfaya Dön + footer)
-  ui/                   Reveal, SectionHeading, Counter, InstagramIcon, Logo
+  Footer.tsx            Tüm sayfalarda ortak; "Yukarı" = ui/BackToTop
+  ui/                   Reveal, SectionHeading, Counter, InstagramIcon, Logo, Tilt (3D kart eğimi)
+  three/                3D: Stage (ortak tuval), Grow (inşa animasyonu), VillaScene + HeroCanvas, BuildScene + BuildCanvas, webgl.ts
 lib/
   site.ts               **Firma bilgileri ve tüm içerik verisi (tek doğru kaynak)**
   images.ts             Görsel URL'leri (Unsplash yer tutucular)
   kvkk.ts               KVKK aydınlatma metni (genel şablon — hukuki kontrol önerilir)
+  palette.ts            3D sahneler için tema renklerinin JS kopyası (globals.css ile aynı tutulur)
 public/img/             aras-logo.png (tam logo), aras-logo-mark.png (yalnızca altıgen), şeffaf zeminli
 public/img/referanslar/ Referans logoları (tek renkli maske, bkz. aşağı)
 ARAS logo.png           Müşteriden gelen orijinal logo — silme
@@ -92,7 +102,7 @@ Yıllık tecrübe sayısı `new Date().getFullYear() - 1994` ile hesaplanır; el
   - Metin: `stone` (ikincil)
   - Vurgu: `gold` (#d3a971 — logodaki ton), `gold-hi`, `gold-lo`, `bronze`
 - Gold **vurgu** rengidir: ince çizgi, ikon, küçük etiket, buton kenarı, hover. Büyük alanları gold ile doldurma.
-- Tipografi: başlıklar `font-serif` (Cormorant, ince 300–500, gerekirse *italik* vurgu); gövde `font-sans` (Manrope). Küçük üst etiketler: `eyebrow` sınıfı (büyük harf, geniş harf aralığı, gold).
+- Tipografi: `font-serif` adı korunuyor ama artık Helvetica/Inter Tight başlık yazı tipi (ince 300, sıkı harf aralığı); gövde `font-sans` aynı aile. `font-serif italic` ve `gold-text italic` otomatik **Roboto Slab** olur (globals.css). Sıra önemli: Windows "Helvetica"yı Arial'a çevirir, bu yüzden yığında Inter Tight "Helvetica"dan önce. Küçük üst etiketler: `eyebrow` sınıfı (büyük harf, geniş harf aralığı, gold).
 - Köşeler keskin veya çok az yuvarlak (lüks mimari hissi). Butonlar dikdörtgen, ince kenarlı.
 - Hareketler `ease-lux` eğrisiyle (`[0.22, 1, 0.36, 1]`), yavaş ve akıcı (0.6–1.4 sn). Zıplama/dönme yok.
 - **Uydurma içerik yok:** sahte istatistik ("500+ proje"), sahte referans/müşteri adı, uydurma ödül/sertifika, sahte telefon/adres ekleme. Müşteriden gelmeyen bilgi siteye girmez.
@@ -104,7 +114,20 @@ Yıllık tecrübe sayısı `new Date().getFullYear() - 1994` ile hesaplanır; el
 - Logolar **markaların resmî sitelerinden** alındı, elle çizilmedi. Şekli bozulmadan tek renkli (beyaz, şeffaf zeminli) maskeye çevrildi; sitede CSS `mask-image` ile fildişi, üzerine gelince gold boyanır. Rozet biçimli logolarda (Marshall, Filli Boya) yalnızca rozet içindeki yazı alındı; Jotun'da yalnızca lacivert yazı + amblem (`jotun.svg`).
 - Yeni logo eklerken: şeffaf PNG/SVG al → beyaz siluet yap → `public/img/referanslar/` → `ratio` (en/boy) yaz; ince çizgili logolara `scale` ver.
 - **Artı Grup** bağlantısı kapalı: sitelerinin SSL sertifikası süresi dolmuş (Eylül 2026). Yenilenince `url` alanını doldur.
-- Bölüm sırası: Kurumsal 01 · Uzmanlıklar 02 · Projeler 03 · Referanslar 04 · İletişim 05.
+- Sayfalar: Anasayfa `/` · Kurumsal `/kurumsal` · Uzmanlıklarımız `/uzmanliklar` (hizmetler + 3D kapsam) · Projelerimiz `/projeler` · Referanslar `/referanslar` · İletişim `/iletisim`. Bölüm numaraları (`no`) sayfa içinde 01'den başlar.
+- Anasayfa özetleri: `About more`, `Services more`, `Projects limit={6}`, `References compact` → "Detaylı Bilgi / Tüm …" düğmeleri (`ui/MoreLink`).
+- "Teklif Alın" düğmesi bilerek yok (müşteri isteği). Bilgi linkleri `contactHref(konu)` → `/iletisim?konu=…` (form Konu'yu seçer).
+
+## 3D
+
+- Sahneler yalnızca tarayıcıda yüklenir (`next/dynamic`, `ssr: false`). WebGL yoksa yerine fotoğraf gösterilir (`three/webgl.ts`).
+- `Stage`: ekran dışındayken çizim durur (`frameloop="never"`), düşük performansta çözünürlük düşer (`PerformanceMonitor`). Fare konumu `document.body`'den okunur (metin katmanı tuvalin üstünde).
+- `Grow`: nesneyi yerden yükselterek "inşa eder"; `on` kapanınca geri söker. Pivot alttadır.
+- **Hero (`VillaScene`)**: prosedürel villa maketi, gold halkalı mermer **döner tabla** üzerinde (selviler, şimşirler, şezlonglar, bahçe aydınlatmaları, basamak taşları, çatı pergolası). Yatay sürükleme ile 360° döner (`HeroCanvas` → `Spin` ref), bırakınca yavaşça kendi döner; telefonda dikey kaydırma bozulmaz (`touch-pan-y`). Kamera sabit açı + hafif paralaks. Kadraj `setViewOffset` ile kaydırılır (geniş ekranda sağa, dar ekranda yukarı) — bakış açısı bozulmaz.
+- **Kapsam (`BuildScene`)**: kesiti açık oda; aşamalar 0–6 = mimari plan · tesisat · elektrik · duvar · zemin (şap + parke) · doğrama · mobilya. Her aşamanın kamera planı `shots` dizisinde.
+- Renkler `lib/palette.ts`'ten; yeni renk gerekiyorsa önce oraya (ve gerekiyorsa `@theme`'e) ekle.
+- "Hareketi azalt": sahneler animasyonsuz son hâlinde (`instant`), toz parçacıkları ve yansıma kapalı.
+- **Zed Renovasyon görselleri kullanılmaz** (müşteri kararı, telif). Kapsam bölümündeki kalem adları müşterinin onayıyla eklendi; açıklama metinleri ARAS'a özgü yazıldı. Sitede "kol" ifadesi geçmez.
 
 ## Duyarlı tasarım
 

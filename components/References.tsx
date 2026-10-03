@@ -5,6 +5,8 @@ import { ArrowUpRight } from "lucide-react";
 import clsx from "clsx";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
+import Tilt from "./ui/Tilt";
+import MoreLink from "./ui/MoreLink";
 import { references } from "@/lib/site";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -117,6 +119,7 @@ function PartnerCard({ p, i }: { p: (typeof references.partners)[number]; i: num
       transition={{ duration: 1.3, delay: i * 0.15, ease }}
       className="h-full"
     >
+      <Tilt className="h-full" max={6}>
       {p.url ? (
         <a
           href={p.url}
@@ -133,6 +136,7 @@ function PartnerCard({ p, i }: { p: (typeof references.partners)[number]; i: num
           {inner}
         </div>
       )}
+      </Tilt>
     </motion.div>
   );
 }
@@ -165,7 +169,8 @@ function BrandRow({ items, reverse }: { items: typeof references.brands; reverse
   );
 }
 
-export default function References() {
+// compact: anasayfada yalnızca marka şeridi + "Tüm Referanslar" → /referanslar
+export default function References({ no = "01", compact = false }: { no?: string; compact?: boolean }) {
   const half = Math.ceil(references.brands.length / 2);
 
   return (
@@ -183,16 +188,23 @@ export default function References() {
       <div className="container-lux relative">
         <div className="mb-16 grid gap-10 lg:mb-20 lg:grid-cols-12 lg:items-end">
           <SectionHeading
-            no="04"
+            no={no}
             eyebrow="Referanslarımız"
             title={["Güvenle büyüyen", <span key="t" className="gold-text italic">iş birlikleri.</span>]}
             className="lg:col-span-7"
           />
           <Reveal delay={0.2} className="lg:col-span-5">
             <p className="max-w-md text-[1.02rem] leading-[1.85] text-mist/75 lg:ml-auto">{references.intro}</p>
+            {compact && (
+              <div className="mt-8 lg:flex lg:justify-end">
+                <MoreLink href="/referanslar">Tüm Referanslar</MoreLink>
+              </div>
+            )}
           </Reveal>
         </div>
 
+        {!compact && (
+          <>
         {/* İş ortakları */}
         <Reveal y={16} className="mb-8 flex items-center gap-4">
           <span className="eyebrow !text-[0.62rem]">İş Ortaklarımız</span>
@@ -209,6 +221,8 @@ export default function References() {
           <span className="eyebrow !text-[0.62rem]">Çalıştığımız Markalar</span>
           <span className="h-px flex-1 bg-gradient-to-r from-gold/40 to-transparent" aria-hidden="true" />
         </Reveal>
+          </>
+        )}
       </div>
 
       <Reveal className="relative space-y-px border-y border-white/[0.07]">

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useRef } from "react";
 import MaskText from "./ui/MaskText";
@@ -33,10 +34,10 @@ export default function CtaBand() {
           className="mx-auto max-w-5xl font-serif text-[clamp(2.3rem,5.6vw,5rem)] leading-[1.04] font-light text-ivory"
         />
         <Reveal delay={0.35} className="mt-12 flex justify-center">
-          <a href="#iletisim" className="btn-lux btn-solid">
+          <Link href="/iletisim" className="btn-lux btn-solid">
             Projenizi Konuşalım
             <ArrowRight className="size-4" aria-hidden="true" />
-          </a>
+          </Link>
         </Reveal>
       </div>
     </section>

@@ -19,8 +19,12 @@
   --color-gold-lo: #a98451;
   --color-bronze: #8a6a42;
 
-  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-  --font-sans: var(--font-manrope), "Manrope", system-ui, sans-serif;
+  /* Faras İnşaat ile aynı aile. "font-serif" adı korunuyor: başlık (display) yazı tipi. */
+  /* Sıra önemli: Windows "Helvetica" adını Arial'a çevirir. Bu yüzden Apple'daki "Helvetica Neue"
+     önce, ardından Inter Tight gelir; düz "Helvetica" yalnızca son yedektir. */
+  --font-serif: "Helvetica Neue", var(--font-inter-tight), Helvetica, Arial, sans-serif;
+  --font-sans: "Helvetica Neue", var(--font-inter-tight), Helvetica, Arial, sans-serif;
+  --font-slab: var(--font-roboto-slab), "Roboto Slab", Georgia, serif;
 
   --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -89,6 +93,19 @@ body {
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--color-gold);
+}
+
+/* Başlıklar: Helvetica ince, sıkı harf aralığı (base katmanında: tracking-* sınıfları yine geçerli). */
+@layer base {
+  h1, h2, h3, .font-serif {
+    letter-spacing: -0.025em;
+  }
+}
+/* İtalik vurgular Roboto Slab (Faras'ın ikincil yazı tipi). Katmansız: font-serif sınıfını bilerek ezer. */
+.font-serif.italic, .gold-text.italic {
+  font-family: var(--font-slab);
+  font-style: normal;
+  font-weight: 300;
 }
 
 @utility gold-text {

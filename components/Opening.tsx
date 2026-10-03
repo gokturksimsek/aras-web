@@ -3,11 +3,10 @@
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
-import Header from "./Header";
 import Hero from "./Hero";
 import { site } from "@/lib/site";
 
-// Açılış perdesi → perde kalkınca hero animasyonları başlar.
+// Açılış perdesi (yalnızca anasayfa) → perde kalkınca hero animasyonları başlar. Header layout'ta.
 export default function Opening() {
   const reduce = useReducedMotion();
   const [loading, setLoading] = useState(true);
@@ -19,7 +18,7 @@ export default function Opening() {
       seen = sessionStorage.getItem("aras-intro") === "1";
       sessionStorage.setItem("aras-intro", "1");
     } catch {}
-    const t = setTimeout(() => setLoading(false), reduce ? 0 : seen ? 350 : 2100);
+    const t = setTimeout(() => setLoading(false), reduce ? 0 : seen ? 120 : 2100);
     return () => clearTimeout(t);
   }, [reduce]);
 
@@ -71,7 +70,6 @@ export default function Opening() {
         )}
       </AnimatePresence>
 
-      <Header />
       <Hero ready={!loading} />
     </>
   );

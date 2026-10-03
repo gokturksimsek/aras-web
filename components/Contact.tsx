@@ -7,7 +7,7 @@ import clsx from "clsx";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 import InstagramIcon from "./ui/InstagramIcon";
-import { TOPIC_EVENT, contactTopics, site } from "@/lib/site";
+import { contactTopics, site } from "@/lib/site";
 
 type Status = "idle" | "sending" | "ok" | "mailto" | "error";
 
@@ -50,16 +50,15 @@ function openMailDraft(d: Record<string, string>) {
   window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-export default function Contact() {
+export default function Contact({ no = "01" }: { no?: string }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [topic, setTopic] = useState("");
 
-  // Hizmet kartlarından gelen konu seçimi
   useEffect(() => {
-    const on = (e: Event) => setTopic((e as CustomEvent<string>).detail);
-    window.addEventListener(TOPIC_EVENT, on);
-    return () => window.removeEventListener(TOPIC_EVENT, on);
+    // /iletisim?konu=... ile gelindiyse Konu'yu seç (listede varsa)
+    const k = new URLSearchParams(window.location.search).get("konu");
+    if (k && contactTopics.includes(k)) setTopic(k);
   }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -115,7 +114,7 @@ export default function Contact() {
         {/* Sol: bilgiler */}
         <div className="lg:col-span-5">
           <SectionHeading
-            no="05"
+            no={no}
             eyebrow="İletişim"
             title={["Projenizi", <span key="t" className="gold-text italic">dinleyelim.</span>]}
           />
@@ -173,7 +172,7 @@ export default function Contact() {
         <Reveal delay={0.1} className="lg:col-span-7 lg:pl-12">
           <div className="relative border border-white/10 bg-anthracite p-7 sm:p-12">
             <span className="absolute -top-px left-10 h-px w-24 bg-gold" aria-hidden="true" />
-            <h3 className="font-serif text-3xl font-light text-ivory">Teklif ve Bilgi Formu</h3>
+            <h3 className="font-serif text-3xl font-light text-ivory">Bilgi ve İletişim Formu</h3>
             <p className="mt-2 text-sm text-stone">* işaretli alanlar zorunludur.</p>
 
             <form onSubmit={onSubmit} noValidate className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">

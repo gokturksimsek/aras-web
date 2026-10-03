@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import PageShell from "@/components/PageShell";
 
 export const metadata: Metadata = { title: "Sayfa Bulunamadı" };
 
 export default function NotFound() {
   return (
-    <PageShell>
-      <section className="grain relative flex min-h-[70svh] items-center overflow-hidden bg-anthracite py-24">
+    <main id="icerik">
+      <section className="grain relative flex min-h-[86svh] items-center overflow-hidden bg-anthracite pt-32 pb-24">
         <span
           className="pointer-events-none absolute inset-0 grid select-none place-items-center font-serif text-[40vw] leading-none font-light text-white/[0.03]"
           aria-hidden="true"
@@ -29,6 +28,6 @@ export default function NotFound() {
           </Link>
         </div>
       </section>
-    </PageShell>
+    </main>
   );
 }

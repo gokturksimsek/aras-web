@@ -5,15 +5,16 @@ import { Phone } from "lucide-react";
 import { useState } from "react";
 import { site } from "@/lib/site";
 
-// Mobilde sabit "Hemen Ara" butonu: hero geçilince çıkar; iletişim bölümü ve footer'da gizlenir.
+// Mobilde sabit "Hemen Ara" butonu (tüm sayfalar): ilk ekran geçilince çıkar;
+// iletişim formu ve footer görününce gizlenir.
 export default function CallButton() {
   const { scrollY } = useScroll();
   const [show, setShow] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (y) => {
-    const contact = document.getElementById("iletisim");
-    const reachedContact = contact ? y + window.innerHeight > contact.offsetTop + 80 : false;
-    setShow(y > window.innerHeight * 0.8 && !reachedContact);
+    const stop = document.getElementById("iletisim") ?? document.querySelector("footer");
+    const reached = stop ? y + window.innerHeight > stop.getBoundingClientRect().top + y + 80 : false;
+    setShow(y > Math.min(window.innerHeight * 0.8, 420) && !reached);
   });
 
   if (!site.phone) return null;

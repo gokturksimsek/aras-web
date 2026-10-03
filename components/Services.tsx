@@ -7,12 +7,14 @@ import { useState } from "react";
 import clsx from "clsx";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
-import { selectTopic, services } from "@/lib/site";
+import { contactHref, services } from "@/lib/site";
+import MoreLink from "./ui/MoreLink";
 import { img } from "@/lib/images";
 
 const icons = { KeyRound, Ruler, House, PaintRoller };
 
-export default function Services() {
+// more: anasayfada "Tüm Uzmanlıklar" → /uzmanliklar
+export default function Services({ no = "01", more = false }: { no?: string; more?: boolean }) {
   const [active, setActive] = useState(0);
 
   return (
@@ -20,7 +22,7 @@ export default function Services() {
       <div className="container-lux">
         <div className="mb-16 grid gap-10 lg:mb-20 lg:grid-cols-12 lg:items-end">
           <SectionHeading
-            no="02"
+            no={no}
             eyebrow="Uzmanlıklarımız"
             title={["Her detayda", <span key="t" className="gold-text italic">ustalık.</span>]}
             className="lg:col-span-7"
@@ -30,6 +32,11 @@ export default function Services() {
               Konut ve villa projelerinden anahtar teslim iç mimariye kadar; kaba inşaat sonrasındaki
               tüm ince işçilik ve dekoratif uygulamaları kendi ekibimizle tek elden yürütüyoruz.
             </p>
+            {more && (
+              <div className="mt-8 lg:flex lg:justify-end">
+                <MoreLink href="/uzmanliklar">Tüm Uzmanlıklar</MoreLink>
+              </div>
+            )}
           </Reveal>
         </div>
 
@@ -107,8 +114,7 @@ export default function Services() {
                       <div className="overflow-hidden">
                         <p className="max-w-md text-[0.95rem] leading-relaxed text-mist/85">{s.text}</p>
                         <a
-                          href="#iletisim"
-                          onClick={() => selectTopic(s.topic)}
+                          href={contactHref(s.topic)}
                           className="mt-4 inline-flex min-h-11 items-center gap-2 text-[0.68rem] font-semibold tracking-[0.26em] text-gold uppercase transition-colors hover:text-gold-hi"
                         >
                           Bilgi Alın <ArrowUpRight className="size-4" aria-hidden="true" />
@@ -145,8 +151,7 @@ export default function Services() {
                     <h3 className="font-serif text-[1.9rem] leading-tight font-light text-ivory">{s.title}</h3>
                     <p className="mt-4 text-[0.95rem] leading-relaxed text-mist/75">{s.text}</p>
                     <a
-                      href="#iletisim"
-                      onClick={() => selectTopic(s.topic)}
+                      href={contactHref(s.topic)}
                       className="mt-auto inline-flex min-h-11 items-center gap-2 pt-4 text-[0.68rem] font-semibold tracking-[0.26em] text-gold uppercase transition-colors hover:text-gold-hi"
                     >
                       Bilgi Alın <ArrowUpRight className="size-4" aria-hidden="true" />

@@ -1,20 +1,27 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Inter_Tight, Roboto_Slab } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import CallButton from "@/components/CallButton";
+import PageTransition from "@/components/PageTransition";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
+// Yazı tipleri farasinsaat.com ile aynı aile: Helvetica (başlık + metin) ve Roboto Slab (ikincil).
+// Helvetica web'e gömülemez (lisans); Apple cihazlarda sistemdeki Helvetica Neue kullanılır,
+// diğerlerinde ona en yakın Inter Tight yüklenir (globals.css → --font-sans / --font-serif).
+const interTight = Inter_Tight({
   subsets: ["latin", "latin-ext"],
   weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  variable: "--font-inter-tight",
   display: "swap",
 });
 
-const manrope = Manrope({
+const robotoSlab = Roboto_Slab({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-manrope",
+  weight: ["300", "400"],
+  variable: "--font-roboto-slab",
   display: "swap",
 });
 
@@ -63,7 +70,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="tr" className={`${cormorant.variable} ${manrope.variable}`}>
+    <html lang="tr" className={`${interTight.variable} ${robotoSlab.variable}`}>
       <body>
         <a
           href="#icerik"
@@ -75,7 +82,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <Header />
+          <PageTransition />
+          {children}
+          <Footer />
+          <CallButton />
+        </SmoothScroll>
       </body>
     </html>
   );

@@ -8,19 +8,25 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
+import Tilt from "./ui/Tilt";
+import MoreLink from "./ui/MoreLink";
 import { projects, type ProjectCategory } from "@/lib/images";
 
 const filters: ("Tümü" | ProjectCategory)[] = ["Tümü", "Villa", "Konut", "İç Mimari", "Dekorasyon"];
 const ratioClass = { tall: "aspect-[3/4]", wide: "aspect-[4/3]", square: "aspect-square" };
 
-export default function Projects() {
+// limit: anasayfada ilk N proje, filtre yok + "Tüm Projeler" → /projeler
+export default function Projects({ no = "01", limit }: { no?: string; limit?: number }) {
   const [filter, setFilter] = useState<(typeof filters)[number]>("Tümü");
   const [open, setOpen] = useState<number | null>(null);
   const lenis = useLenis();
 
   const list = useMemo(
-    () => (filter === "Tümü" ? projects : projects.filter((p) => p.category === filter)),
-    [filter],
+    () => {
+      const all = filter === "Tümü" ? projects : projects.filter((p) => p.category === filter);
+      return limit ? all.slice(0, limit) : all;
+    },
+    [filter, limit],
   );
 
   const step = useCallback(
@@ -53,11 +59,16 @@ export default function Projects() {
       <div className="container-lux">
         <div className="mb-14 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
-            no="03"
+            no={no}
             eyebrow="Projelerimiz"
             title={["Yaşam alanlarına", <span key="t" className="gold-text italic">imzamız.</span>]}
           />
 
+          {limit ? (
+            <Reveal delay={0.15}>
+              <MoreLink href="/projeler">Tüm Projeler</MoreLink>
+            </Reveal>
+          ) : (
           <Reveal delay={0.15}>
             <div role="tablist" aria-label="Proje kategorisi" className="flex flex-wrap gap-x-7 gap-y-2">
               {filters.map((f) => (
@@ -84,6 +95,7 @@ export default function Projects() {
               ))}
             </div>
           </Reveal>
+          )}
         </div>
 
         {/* Masonry: CSS sütunları */}
@@ -97,6 +109,7 @@ export default function Projects() {
                   transition={{ duration: 0.9, delay: Math.min(i, 6) * 0.07, ease: [0.22, 1, 0.36, 1] }}
                   className="break-inside-avoid"
                 >
+                  <Tilt>
                   <button
                     type="button"
                     onClick={() => setOpen(i)}
@@ -129,6 +142,7 @@ export default function Projects() {
                       </span>
                     </div>
                   </button>
+                  </Tilt>
                 </motion.li>
               ))}
         </ul>

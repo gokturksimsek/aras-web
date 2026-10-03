@@ -25,14 +25,72 @@ export const site = {
     "ARAS İNŞAAT, 1994'ten bu yana Ankara genelinde konut ve villa projeleri, A'dan Z'ye anahtar teslim iç mimari ve dekorasyon işleri yapan köklü bir inşaat firmasıdır.",
 };
 
+// Her bölüm kendi sayfasında (OBES düzeni). Etkin link pathname ile belirlenir.
 export const nav = [
-  { href: "#anasayfa", label: "Anasayfa" },
-  { href: "#kurumsal", label: "Kurumsal" },
-  { href: "#uzmanliklar", label: "Uzmanlıklarımız" },
-  { href: "#projeler", label: "Projelerimiz" },
-  { href: "#referanslar", label: "Referanslar" },
-  { href: "#iletisim", label: "İletişim" },
+  { href: "/", label: "Anasayfa" },
+  { href: "/kurumsal", label: "Kurumsal" },
+  { href: "/uzmanliklar", label: "Uzmanlıklarımız" },
+  { href: "/projeler", label: "Projelerimiz" },
+  { href: "/referanslar", label: "Referanslar" },
+  { href: "/iletisim", label: "İletişim" },
 ] as const;
+
+/** İletişim sayfasına konu seçili gider: /iletisim?konu=... (form Konu'yu otomatik seçer) */
+export const contactHref = (topic?: string) => (topic ? `/iletisim?konu=${encodeURIComponent(topic)}` : "/iletisim");
+
+// Alt sayfaların başlık bandı (breadcrumb + başlık + kısa açıklama)
+export const pages = {
+  kurumsal: {
+    crumb: "Kurumsal",
+    title: ["1994'ten bu yana", "özenle ve güvenle."],
+    lead: "Erbakan ARAS'ın kurduğu firmamız; Ankara genelinde konut, villa ve anahtar teslim iç mimari işlerini kendi ekibiyle yürütür.",
+  },
+  uzmanliklar: {
+    crumb: "Uzmanlıklarımız",
+    title: ["Kaba inşaattan", "anahtar teslime."],
+    lead: "Villa ve konut projelerinden anahtar teslim iç mimariye; kaba inşaat sonrasındaki tüm ince işçilik ve dekoratif uygulamalar tek elden.",
+  },
+  projeler: {
+    crumb: "Projelerimiz",
+    title: ["Seçkin", "yaşam alanları."],
+    lead: "Villa, konut, iç mimari ve dekorasyon işlerimizden seçkiler.",
+  },
+  referanslar: {
+    crumb: "Referanslar",
+    title: ["Birlikte", "değer katıyoruz."],
+    lead: "Birlikte çalıştığımız firmalar ve uygulamalarımızda tercih ettiğimiz markalar.",
+  },
+  iletisim: {
+    crumb: "İletişim",
+    title: ["Her proje", "bir sohbetle başlar."],
+    lead: "Ankara merkezli ekibimizle Ankara genelindeki villa, konut ve iç mimari projeleriniz için buradayız.",
+  },
+  kvkk: {
+    crumb: "KVKK Aydınlatma Metni",
+    title: ["KVKK", "Aydınlatma Metni"],
+    lead: "Kişisel verilerinizin korunması ve işlenmesine ilişkin bilgilendirme.",
+  },
+} as const;
+
+// Kurumsal → Yaklaşımımız. Yalnızca firmanın kendi verdiği bilgilere dayanır.
+export const approach = [
+  {
+    title: "Özenle",
+    text: "Kaba inşaatın bittiği yerde başlayan ince işçiliği, kalıcı kaliteyi detaylarda arayan bir titizlikle uygularız.",
+  },
+  {
+    title: "Güvenle",
+    text: "1994'ten bu yana aynı ilkeyle çalışıyor; büyük firmalarla kurduğumuz iş ortaklıklarını bu güvene borçluyuz.",
+  },
+  {
+    title: "Tek elden",
+    text: "Projenin ilk çiziminden anahtar teslimine kadar bütün süreci tek ekip ve tek sorumlulukla yürütürüz.",
+  },
+  {
+    title: "Kendi ekibimizle",
+    text: "İnce işçilik ve dekoratif uygulamalar, işin başından sonuna kendi profesyonel ekibimiz tarafından yapılır.",
+  },
+];
 
 export const hero = {
   eyebrow: "ARAS İNŞAAT",
@@ -97,6 +155,120 @@ export const services = [
   },
 ] as const;
 
+// Anahtar teslim kapsamı: bir iç mekânın baştan sona yapım sırası (43 iş kalemi).
+// Kalem adları firmanın onayladığı hizmet listesidir; açıklamalar ARAS'a özgüdür.
+// Sitede "kol" ifadesi kullanılmaz.
+export const disciplines = [
+  {
+    no: "01",
+    title: "Mimari Tasarım & Projelendirme",
+    short: "Mimari tasarım",
+    lead: "Her iş ölçüyle ve çizimle başlar. Mekânı uygulamadan önce üç boyutlu olarak birlikte görür, kararları kâğıt üzerinde netleştiririz.",
+    items: [
+      "İç mimari tasarım ve uygulama çözümleri",
+      "Mimari proje geliştirme ve uygulama yönetimi",
+      "3D görselleştirme ve konsept tasarım",
+      "Keşif, metraj ve teknik analiz hizmetleri",
+    ],
+  },
+  {
+    no: "02",
+    title: "Mekanik Tesisat Sistemleri",
+    short: "Mekanik tesisat",
+    lead: "Duvarlar kapanmadan tamamlanan, görünmeyen ama her gün hissedilen altyapı: su, ısıtma ve yangın hatları projesine uygun döşenir.",
+    items: [
+      "Sıhhi tesisat sistemleri",
+      "Temiz ve pis su tesisat uygulamaları",
+      "Doğalgaz ve ısıtma sistemleri",
+      "Yerden ısıtma sistemleri",
+      "Yangın tesisat sistemleri",
+    ],
+  },
+  {
+    no: "03",
+    title: "Elektrik & Zayıf Akım Sistemleri",
+    short: "Elektrik & zayıf akım",
+    lead: "Aydınlatmadan akıllı ev otomasyonuna, güvenlikten data altyapısına; mekânın tüm elektrik sistemleri tek projede kurgulanır.",
+    items: [
+      "Elektrik altyapı ve tesisat sistemleri",
+      "Aydınlatma tasarım ve uygulamaları",
+      "Akıllı ev otomasyon sistemleri",
+      "Kamera ve güvenlik sistemleri",
+      "Alarm ve yangın algılama sistemleri",
+      "Data ve network altyapı sistemleri",
+      "Görüntülü diafon sistemleri",
+    ],
+  },
+  {
+    no: "04",
+    title: "Duvar & Yüzey Uygulamaları",
+    short: "Duvar & yüzey",
+    lead: "Sıvadan son kat boyaya, alçıpandan dekoratif panele; mekânın karakterini belirleyen yüzeyler aynı ustalıkla işlenir.",
+    items: [
+      "Seramik ve fayans duvar kaplama uygulamaları",
+      "Kaba ve ince sıva uygulamaları",
+      "Alçı ve saten alçı yüzey uygulamaları",
+      "Alçıpan bölme duvar sistemleri",
+      "Dekoratif duvar paneli sistemleri",
+      "Ahşap, MDF ve taş kaplama uygulamaları",
+      "Duvar kâğıdı uygulamaları",
+      "Dekoratif boya ve yüzey kaplama sistemleri",
+      "Profesyonel boya ve badana uygulamaları",
+    ],
+  },
+  {
+    no: "05",
+    title: "Zemin Sistemleri",
+    short: "Zemin sistemleri",
+    lead: "Doğru kotta hazırlanan şap üzerine seramik, doğal taş, parke ya da epoksi; her zemin yıllarca ilk günkü gibi kalacak şekilde uygulanır.",
+    items: [
+      "Seramik zemin kaplama uygulamaları",
+      "Şap ve zemin hazırlık sistemleri",
+      "Porselen kaplama uygulamaları",
+      "Doğal taş, mermer ve granit zemin uygulamaları",
+      "Epoksi ve endüstriyel zemin sistemleri",
+      "Laminat, lamine ve masif parke sistemleri",
+      "Mozaik ve özel tasarım zemin uygulamaları",
+    ],
+  },
+  {
+    no: "06",
+    title: "Kapı, Cam & Doğrama Sistemleri",
+    short: "Kapı, cam & doğrama",
+    lead: "Ölçüsü yerinde alınan kapı, doğrama ve cam sistemleri, mekâna kusursuz oturacak şekilde üretilir ve monte edilir.",
+    items: [
+      "İç ve dış kapı sistemleri",
+      "PVC ve alüminyum doğrama sistemleri",
+      "Cam balkon ve sürme sistem çözümleri",
+      "Duşakabin ve cam bölme sistemleri",
+      "Cam, ayna ve vitrin uygulamaları",
+    ],
+  },
+  {
+    no: "07",
+    title: "Mobilya & Özel İmalat",
+    short: "Mobilya & özel imalat",
+    lead: "Mutfaktan giyinme odasına, ölçüye özel üretilen mobilyalarla mekân tamamlanır ve anahtar teslim edilir.",
+    items: [
+      "Özel tasarım mobilya üretim ve uygulama çözümleri",
+      "Mutfak ve banyo sistemleri tasarım ve uygulamaları",
+      "Gardırop, vestiyer ve giyinme odası sistemleri",
+      "TV ünitesi ve özel yaşam alanı tasarımları",
+      "Lake yüzey ve özel boya uygulama sistemleri",
+      "Ahşap mimari üretim ve detay çözümleri",
+    ],
+  },
+] as const;
+
+/** Toplam iş kalemi — elle sayılmaz. */
+export const disciplineItemCount = disciplines.reduce((n, d) => n + d.items.length, 0);
+
+export const scope = {
+  eyebrow: "Anahtar Teslim Kapsamı",
+  title: ["Çizimden anahtara,", "her aşama tek elden."],
+  lead: "Bir iç mekânın baştan sona bütün işleri, yapıldıkları sırayla ve tek bir ekiple. Taşeronlar arasında koordinasyon aramazsınız; sorumluluk baştan sona bizdedir.",
+};
+
 // Referanslar. Logolar markaların resmî sitelerinden alındı ve tek renkli maskeye
 // çevrildi (public/img/referanslar). ratio = logonun en/boy oranı (boyut dengeleme için);
 // scale = ince çizgili logolar için göz kararı büyütme.
@@ -149,16 +321,14 @@ export const marquee = [
   "Dekorasyon",
 ];
 
-// Hizmet kartındaki "Bilgi Alın" tıklanınca formdaki Konu'yu seçer.
-export const TOPIC_EVENT = "aras:konu";
-export const selectTopic = (topic: string) =>
-  window.dispatchEvent(new CustomEvent(TOPIC_EVENT, { detail: topic }));
-
 export const contactTopics = [
+  "Komple Anahtar Teslim",
   "Villa Projesi",
   "Konut Projesi",
   "Anahtar Teslim İç Mimari",
   "İnce İşçilik",
   "Dekoratif Uygulamalar",
+  // Anahtar teslim kapsamındaki uygulama alanları
+  ...disciplines.map((d) => d.title),
   "Diğer",
 ];
