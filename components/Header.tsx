@@ -118,7 +118,8 @@ export default function Header() {
           >
             <Logo compact={scrolled} />
 
-            <nav aria-label="Ana menü" className="hidden xl:block">
+            {/* Menü sağa yaslı: sağ kenarı üst şeritteki Instagram satırıyla aynı hizada */}
+            <nav aria-label="Ana menü" className="ml-auto hidden xl:block">
               <ul className="flex items-center gap-8 2xl:gap-11">
                 {nav.map((n) => {
                   const on = isActive(pathname, n.href);
@@ -170,8 +171,6 @@ export default function Header() {
                 />
               </span>
             </button>
-            {/* Geniş ekranda menünün dengesi için boşluk (eski "Teklif Alın" yeri) */}
-            <span className="hidden w-[9.5rem] xl:block" aria-hidden="true" />
           </div>
         </div>
       </motion.header>
