@@ -1,6 +1,6 @@
 "use client";
 
-import { ContactShadows, Edges, Environment, Grid, Lightformer, MeshReflectorMaterial, Sparkles } from "@react-three/drei";
+import { ContactShadows, Edges, Environment, Grid, Lightformer, MeshReflectorMaterial, RoundedBox, Sparkles } from "@react-three/drei";
 import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -30,8 +30,8 @@ function Block({ b, on, instant }: { b: Box; on: boolean; instant: boolean }) {
   const [w, h, d] = b.size;
   return (
     <Grow on={on} delay={b.delay} mode={b.mode ?? "y"} position={b.pos} instant={instant}>
-      <mesh position={[0, h / 2, 0]} castShadow receiveShadow>
-        <boxGeometry args={[w, h, d]} />
+      {/* Hafif yuvarlatılmış kenar: ışığı yakalar, maket kalitesinde görünür */}
+      <RoundedBox args={[w, h, d]} radius={Math.min(0.035, Math.min(w, h, d) / 2.2)} smoothness={4} position={[0, h / 2, 0]} castShadow receiveShadow>
         <meshStandardMaterial
           color={b.color}
           roughness={b.rough ?? 0.7}
@@ -39,8 +39,8 @@ function Block({ b, on, instant }: { b: Box; on: boolean; instant: boolean }) {
           emissive={b.emissive ?? "#000000"}
           emissiveIntensity={b.emissiveIntensity ?? 0}
         />
-        {b.edges && <Edges threshold={20} color={c.gold} transparent opacity={0.55} />}
-      </mesh>
+        {b.edges && <Edges threshold={40} color={c.gold} transparent opacity={0.5} />}
+      </RoundedBox>
     </Grow>
   );
 }
@@ -54,8 +54,6 @@ const UF_Y = PLINTH_Y + GF_H + SLAB;
 const blocks: Box[] = [
   // Zemin platformu ve teras
   { size: [13, PLINTH_Y, 8], pos: [0, 0, 0], color: c.slate, rough: 0.85, delay: 0.0, mode: "x" },
-  // Havuz (suyun kendisi ayrı)
-  { size: [5.4, 0.06, 2.4], pos: [-2.8, PLINTH_Y, 2.55], color: c.travertine, rough: 0.9, delay: 0.25, mode: "x" },
   // Zemin kat: sıcak ışıklı iç hacim (cam cephenin arkası)
   { size: [6.2, GF_H, 3.6], pos: [-0.9, PLINTH_Y, -0.7], color: "#2a2016", emissive: c.interior, emissiveIntensity: 1.15, rough: 0.6, delay: 0.45 },
   // Zemin kat traverten duvar
@@ -79,6 +77,174 @@ const mullions = Array.from({ length: 6 }, (_, i) => -3.08 + i * 1.232); // cam 
 // Üst kat yan cephedeki bronz lameller
 const louvers = Array.from({ length: 13 }, (_, i) => -2.45 + i * 0.36);
 
+
+// ─── Su: dalgalanan ışık desenli (kostik) havuz suyu ───────────────────────
+const waterVert = /* glsl */ `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+const waterFrag = /* glsl */ `
+  uniform float uTime;
+  uniform vec2 uScale;
+  uniform vec3 uDeep;
+  uniform vec3 uLight;
+  varying vec2 vUv;
+  void main() {
+    vec2 p = vUv * uScale;
+    float t = uTime * 0.6;
+    // Üst üste binen dalgalar → kostik ağ deseni
+    float w = 0.0;
+    vec2 q = p;
+    for (int i = 0; i < 3; i++) {
+      float fi = float(i);
+      q += vec2(sin(q.y * 1.7 + t + fi * 1.3), cos(q.x * 1.5 - t * 0.8 + fi)) * 0.35;
+      w += sin(q.x * 2.1 + t) * cos(q.y * 2.3 - t * 0.7);
+    }
+    float caustic = pow(abs(sin(w * 1.6)), 14.0);
+    // Kenarlara doğru LED parlaması
+    vec2 e = min(vUv, 1.0 - vUv);
+    float edge = 1.0 - smoothstep(0.0, 0.16, min(e.x, e.y));
+    vec3 col = mix(uDeep, uLight, 0.35 + 0.25 * sin(p.x * 0.6 + t * 0.3));
+    col += uLight * caustic * 0.32 + uLight * edge * 0.5;
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
+function Water({ size, round = false }: { size: [number, number]; round?: boolean }) {
+  const mat = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader: waterVert,
+        fragmentShader: waterFrag,
+        uniforms: {
+          uTime: { value: 0 },
+          uScale: { value: new THREE.Vector2(size[0] * 3.2, size[1] * 3.2) },
+          uDeep: { value: new THREE.Color(c.poolDeep) },
+          uLight: { value: new THREE.Color(c.poolLight) },
+        },
+        toneMapped: false,
+      }),
+    [size],
+  );
+  useEffect(() => () => mat.dispose(), [mat]);
+  useFrame((_, dt) => {
+    mat.uniforms.uTime.value += Math.min(dt, 0.05);
+  });
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]} material={mat}>
+      {round ? <circleGeometry args={[size[0] / 2, 64]} /> : <planeGeometry args={size} />}
+    </mesh>
+  );
+}
+
+const POOL = { x: -2.8, z: 2.55, w: 5.0, d: 2.0 }; // su yüzeyi ölçüsü
+const COPING = 0.22; // traverten kenar genişliği
+
+function Pool({ ready, instant }: { ready: boolean; instant: boolean }) {
+  const y = PLINTH_Y;
+  const W = POOL.w + COPING * 2;
+  const D = POOL.d + COPING * 2;
+  return (
+    <Grow on={ready} delay={0.3} mode="x" position={[POOL.x, y, POOL.z]} instant={instant}>
+      {/* Traverten kenar taşları */}
+      {[
+        { s: [W, 0.07, COPING], p: [0, 0.035, -D / 2 + COPING / 2] },
+        { s: [W, 0.07, COPING], p: [0, 0.035, D / 2 - COPING / 2] },
+        { s: [COPING, 0.07, POOL.d], p: [-W / 2 + COPING / 2, 0.035, 0] },
+        { s: [COPING, 0.07, POOL.d], p: [W / 2 - COPING / 2, 0.035, 0] },
+      ].map((k, i) => (
+        <RoundedBox key={i} args={k.s as [number, number, number]} radius={0.02} smoothness={3} position={k.p as [number, number, number]} castShadow receiveShadow>
+          <meshStandardMaterial color={c.travertine} roughness={0.75} />
+        </RoundedBox>
+      ))}
+      {/* Su yüzeyi (kenarın biraz altında) */}
+      <group position={[0, 0.012, 0]}>
+        <Water size={[POOL.w, POOL.d]} />
+      </group>
+      {/* Sualtı LED hattı: iç kenar boyunca gün ışığı */}
+      {[
+        { s: [POOL.w, 0.02, 0.02], p: [0, 0.02, -POOL.d / 2 + 0.02] },
+        { s: [POOL.w, 0.02, 0.02], p: [0, 0.02, POOL.d / 2 - 0.02] },
+      ].map((k, i) => (
+        <mesh key={i} position={k.p as [number, number, number]}>
+          <boxGeometry args={k.s as [number, number, number]} />
+          <meshStandardMaterial color={c.daylight} emissive={c.poolLight} emissiveIntensity={2.4} toneMapped={false} />
+        </mesh>
+      ))}
+      {/* Havuzun çevresini aydınlatan turkuaz ışık */}
+      <pointLight position={[0, 0.6, 0]} intensity={5} distance={6} color={c.poolLight} />
+    </Grow>
+  );
+}
+
+// Küçük yuvarlak jakuzi (podyum önü)
+function Spa({ ready, instant }: { ready: boolean; instant: boolean }) {
+  return (
+    <Grow on={ready} delay={2.2} mode="all" position={[-5.3, 0, 5.4]} instant={instant}>
+      <mesh position={[0, 0.2, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.05, 1.1, 0.4, 64]} />
+        <meshStandardMaterial color={c.travertine} roughness={0.7} />
+      </mesh>
+      <group position={[0, 0.405, 0]}>
+        <Water size={[1.7, 1.7]} round />
+      </group>
+      <mesh position={[0, 0.41, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.84, 0.87, 64]} />
+        <meshStandardMaterial color={c.daylight} emissive={c.poolLight} emissiveIntensity={2.2} toneMapped={false} />
+      </mesh>
+    </Grow>
+  );
+}
+
+// Gün ışığı LED'leri: platform çevresi (havada asılı etkisi), saçak altı lineer LED + spotlar,
+// traverten duvarı yalayan ışık, basamak taşı aydınlatmaları
+function LedStrip({ size, pos, intensity = 2.6 }: { size: [number, number, number]; pos: [number, number, number]; intensity?: number }) {
+  return (
+    <mesh position={pos}>
+      <boxGeometry args={size} />
+      <meshStandardMaterial color={c.daylight} emissive={c.daylight} emissiveIntensity={intensity} toneMapped={false} />
+    </mesh>
+  );
+}
+
+function Leds({ ready, instant }: { ready: boolean; instant: boolean }) {
+  const ly = PLINTH_Y - 0.06; // platform üst dudağının hemen altı
+  const soffitY = PLINTH_Y + GF_H - 0.012; // ara döşemenin alt yüzü
+  return (
+    <>
+      {/* Platform çevresi şerit LED */}
+      <Grow on={ready} delay={1.7} mode="x" instant={instant}>
+        <LedStrip size={[13, 0.025, 0.02]} pos={[0, ly, 4.01]} />
+        <LedStrip size={[13, 0.025, 0.02]} pos={[0, ly, -4.01]} />
+        <LedStrip size={[0.02, 0.025, 8]} pos={[6.51, ly, 0]} />
+        <LedStrip size={[0.02, 0.025, 8]} pos={[-6.51, ly, 0]} />
+      </Grow>
+      {/* Ara döşeme altı: lineer LED + gömme spotlar */}
+      <Grow on={ready} delay={1.85} mode="x" instant={instant}>
+        <LedStrip size={[8.2, 0.02, 0.03]} pos={[0.2, soffitY, 1.98]} intensity={3} />
+        {[-3.2, -1.6, 0, 1.6, 3.2].map((x) => (
+          <mesh key={x} position={[x, soffitY, 1.55]} rotation={[Math.PI / 2, 0, 0]}>
+            <circleGeometry args={[0.06, 20]} />
+            <meshStandardMaterial color={c.daylight} emissive={c.daylight} emissiveIntensity={4} toneMapped={false} />
+          </mesh>
+        ))}
+      </Grow>
+      {/* Spotların cepheye düşen ışığı */}
+      {ready && (
+        <>
+          <pointLight position={[-1.6, soffitY - 0.3, 1.7]} intensity={3.2} distance={4.5} color={c.daylight} />
+          <pointLight position={[1.6, soffitY - 0.3, 1.7]} intensity={3.2} distance={4.5} color={c.daylight} />
+          {/* Traverten duvarı yalayan ışık */}
+          <pointLight position={[-3.7, PLINTH_Y + 0.15, -0.2]} intensity={4} distance={3.5} color={c.daylight} />
+        </>
+      )}
+    </>
+  );
+}
+
 function Villa({ ready, instant }: { ready: boolean; instant: boolean }) {
   return (
     <group>
@@ -90,7 +256,7 @@ function Villa({ ready, instant }: { ready: boolean; instant: boolean }) {
       <Grow on={ready} delay={0.65} position={[-0.9, PLINTH_Y, 1.12]} instant={instant}>
         <mesh position={[0, GF_H / 2, 0]}>
           <boxGeometry args={[6.2, GF_H, 0.04]} />
-          <meshStandardMaterial color={c.glass} transparent opacity={0.28} roughness={0.05} metalness={0.9} />
+          <meshPhysicalMaterial color={c.glass} transparent opacity={0.3} roughness={0.03} metalness={0.6} clearcoat={1} clearcoatRoughness={0.05} />
         </mesh>
         {mullions.map((x) => (
           <mesh key={x} position={[x, GF_H / 2, 0.03]}>
@@ -134,21 +300,11 @@ function Villa({ ready, instant }: { ready: boolean; instant: boolean }) {
         </mesh>
       </Grow>
 
-      {/* Havuz suyu */}
-      <Grow on={ready} delay={0.5} mode="x" position={[-2.8, PLINTH_Y + 0.061, 2.55]} instant={instant}>
-        <mesh rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[5.1, 2.1]} />
-          <meshStandardMaterial color={c.water} metalness={0.9} roughness={0.08} emissive="#16323d" emissiveIntensity={0.35} />
-        </mesh>
-      </Grow>
+      {/* Işıklı havuz (traverten kenar + dalgalı su + sualtı LED) */}
+      <Pool ready={ready} instant={instant} />
 
-      {/* Havuz içi gold kenar ışığı */}
-      <Grow on={ready} delay={1.8} mode="x" position={[-2.8, PLINTH_Y + 0.07, 3.62]} instant={instant}>
-        <mesh>
-          <boxGeometry args={[5.1, 0.02, 0.03]} />
-          <meshStandardMaterial color={c.goldHi} emissive={c.gold} emissiveIntensity={1.6} toneMapped={false} />
-        </mesh>
-      </Grow>
+      {/* Gün ışığı LED'leri */}
+      <Leds ready={ready} instant={instant} />
     </group>
   );
 }
@@ -273,6 +429,9 @@ function Decor({ ready }: { ready: boolean }) {
       <Cypress pos={[-7.6, -0.0, -0.9]} h={3.1} d={2.2} />
       <Cypress pos={[-6.4, -0.0, -4.1]} h={4.4} d={2.15} />
 
+      {/* Küçük yuvarlak jakuzi */}
+      <Spa ready={ready} instant={false} />
+
       {/* Girişte küre şimşirler */}
       <Boxwood pos={[2.85, PLINTH_Y, 2.35]} d={2.2} />
       <Boxwood pos={[5.0, PLINTH_Y, 2.35]} d={2.3} />
@@ -288,6 +447,8 @@ function Decor({ ready }: { ready: boolean }) {
             <boxGeometry args={[1.0, 0.04, 0.46]} />
             <meshStandardMaterial color={c.travertine} roughness={0.85} />
           </mesh>
+          {/* Basamak altı gün ışığı LED */}
+          <LedStrip size={[0.9, 0.012, 0.012]} pos={[0, 0.006, 0.235]} intensity={2} />
         </Grow>
       ))}
 
@@ -399,7 +560,7 @@ export default function VillaScene({
 
       <ambientLight intensity={0.22} />
       <hemisphereLight args={["#dfe5ec", c.ink, 0.45]} />
-      <directionalLight position={[-9, 12, 8]} intensity={2.4} color="#fff6ea" castShadow shadow-mapSize={[1024, 1024]}>
+      <directionalLight position={[-9, 12, 8]} intensity={2.4} color="#fff6ea" castShadow shadow-mapSize={[2048, 2048]} shadow-bias={-0.0003} shadow-normalBias={0.02}>
         <orthographicCamera attach="shadow-camera" args={[-12, 12, 12, -12, 1, 40]} />
       </directionalLight>
       <directionalLight position={[8, 5, -10]} intensity={1.8} color={c.gold} />
@@ -427,7 +588,7 @@ export default function VillaScene({
           scale={18}
           blur={2.4}
           far={8}
-          resolution={lite ? 256 : 512}
+          resolution={lite ? 512 : 1024}
           frames={settled && !instant ? 1 : Infinity}
           color="#000000"
         />
@@ -442,7 +603,7 @@ export default function VillaScene({
         ) : (
           <MeshReflectorMaterial
             blur={[400, 120]}
-            resolution={512}
+            resolution={1024}
             mixBlur={1}
             mixStrength={1.1}
             roughness={1}

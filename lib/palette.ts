@@ -23,4 +23,7 @@ export const palette = {
   water: "#0c1b22", // havuz suyu
   interior: "#f0b46e", // camın ardındaki sıcak iç ışık
   glass: "#1d2a30", // koyu cam
+  daylight: "#fff3e0", // gün ışığı LED (≈ 4000 K)
+  poolDeep: "#04303a", // havuz derin
+  poolLight: "#3fd0d6", // havuz sığ / LED yansıması
 } as const;

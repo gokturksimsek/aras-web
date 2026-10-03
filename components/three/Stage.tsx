@@ -41,7 +41,8 @@ export default function Stage({
   const [lite, setLite] = useState(startsLite);
   // Kenar yumuşatma tuval oluşurken bir kez belirlenir (sonradan değişmez)
   const [initialLite] = useState(lite);
-  const [dpr, setDpr] = useState(() => Math.min(lite ? 1.25 : 1.5, window.devicePixelRatio || 1));
+  // Ekranın yerel çözünürlüğünde çiz (Retina/4K için 2x'e kadar); yavaşlarsa PerformanceMonitor düşürür
+  const [dpr, setDpr] = useState(() => Math.min(lite ? 1.75 : 2, window.devicePixelRatio || 1));
 
   useEffect(() => {
     const el = wrap.current;
@@ -59,7 +60,9 @@ export default function Stage({
         shadows={shadows && !lite ? "soft" : false}
         camera={camera ?? { position: [12, 6, 14], fov: 32 }}
         // Efekt katmanı (EffectComposer) kendi kenar yumuşatmasını yapar; hafif modda efekt yok
-        gl={{ antialias: initialLite, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping }}
+        // Ton eşleme yok: efekt katmanı (masaüstü) zaten ham renk verir; hafif modda da aynı
+        // renkler görünsün diye doğrudan çizimde de kapalı (aksi hâlde sıcak ışıklar griye döner).
+        gl={{ antialias: initialLite, powerPreference: "high-performance", toneMapping: THREE.NoToneMapping }}
         style={{ position: "absolute", inset: 0 }}
         // Metin katmanı tuvalin üstünde; fare konumunu sayfa genelinden oku (paralaks için)
         eventSource={document.body}
@@ -73,7 +76,7 @@ export default function Stage({
       >
         <PerformanceMonitor
           flipflops={3}
-          onDecline={() => (dpr > 1 ? setDpr(1) : setLite(true))}
+          onDecline={() => (dpr > 1.25 ? setDpr(Math.max(1.25, dpr - 0.5)) : setLite(true))}
           onFallback={() => {
             setDpr(1);
             setLite(true);

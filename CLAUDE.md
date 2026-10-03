@@ -125,6 +125,8 @@ Yıllık tecrübe sayısı `new Date().getFullYear() - 1994` ile hesaplanır; el
 - `Grow`: nesneyi yerden yükselterek "inşa eder"; `on` kapanınca geri söker. Pivot alttadır.
 - **Hero (`VillaScene`)**: prosedürel villa maketi, gold halkalı mermer **döner tabla** üzerinde (selviler, şimşirler, şezlonglar, bahçe aydınlatmaları, basamak taşları, çatı pergolası). Yatay sürükleme ile 360° döner (`HeroCanvas` → `Spin` ref), bırakınca yavaşça kendi döner; telefonda dikey kaydırma bozulmaz (`touch-pan-y`). Kamera sabit açı + hafif paralaks. Kadraj `setViewOffset` ile kaydırılır (geniş ekranda sağa, dar ekranda yukarı) — bakış açısı bozulmaz.
 - **Kapsam (`BuildScene`)**: kesiti açık oda; aşamalar 0–6 = mimari plan · tesisat · elektrik · duvar · zemin (şap + parke) · doğrama · mobilya. Her aşamanın kamera planı `shots` dizisinde.
+- Villa ayrıca: kostik desenli ışıklı **havuz** + yuvarlak **jakuzi** (`Water` shader), **gün ışığı LED**'leri (platform çevresi, ara döşeme altı lineer LED + spotlar, basamak taşları, duvar yalama; renk `palette.daylight`).
+- **Kalite (4K):** çizim ekranın yerel piksel oranında (en çok 2x, `Stage`), gölge haritası 2048, yansıma ve temas gölgesi 1024, bloklar `RoundedBox` (yuvarlatılmış kenar). Ton eşleme kapalı (`NoToneMapping`): efekt katmanlı masaüstü ile efektsiz telefon aynı renkleri verir.
 - Renkler `lib/palette.ts`'ten; yeni renk gerekiyorsa önce oraya (ve gerekiyorsa `@theme`'e) ekle.
 - "Hareketi azalt": sahneler animasyonsuz son hâlinde (`instant`), toz parçacıkları ve yansıma kapalı.
 - **Zed Renovasyon görselleri kullanılmaz** (müşteri kararı, telif). Kapsam bölümündeki kalem adları müşterinin onayıyla eklendi; açıklama metinleri ARAS'a özgü yazıldı. Sitede "kol" ifadesi geçmez.

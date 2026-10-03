@@ -60,7 +60,7 @@ export default function Hero({ ready }: { ready: boolean }) {
       <div
         className={
           webgl
-            ? "pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/30 to-transparent max-md:bg-gradient-to-t max-md:from-ink max-md:from-35% max-md:via-ink/60 max-md:via-60% max-md:to-transparent"
+            ? "pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/30 to-transparent max-md:bg-gradient-to-t max-md:from-ink max-md:from-28% max-md:via-ink/45 max-md:via-46% max-md:to-transparent max-md:to-62%"
             : "pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/10"
         }
         aria-hidden="true"

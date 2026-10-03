@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useLenis } from "lenis/react";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import Logo from "./ui/Logo";
@@ -64,11 +64,7 @@ export default function Header() {
             scrolled ? "max-h-0 opacity-0" : "max-h-12 bg-ink/40 opacity-100",
           )}
         >
-          <div className="container-lux flex h-10 items-center justify-between text-[0.68rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
-            <span className="flex items-center gap-2">
-              <MapPin className="size-3.5 text-gold" aria-hidden="true" />
-              {site.region} · <span lang="en">Since {site.founded}</span>
-            </span>
+          <div className="container-lux flex h-10 items-center justify-end text-[0.68rem] font-medium tracking-[0.2em] text-mist/70 uppercase">
             <div className="flex items-center gap-7">
               <span className="hidden font-serif text-sm tracking-[0.08em] normal-case italic text-gold/90 xl:inline">
                 {site.slogan}
