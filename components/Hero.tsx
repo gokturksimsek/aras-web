@@ -82,18 +82,6 @@ export default function Hero({ ready }: { ready: boolean }) {
         style={{ y: contentY, opacity: contentOpacity }}
       >
         <div className="pointer-events-auto max-w-4xl pt-28">
-          <motion.div
-            className="mb-8 flex items-center gap-4"
-            initial={{ opacity: 0, x: -20 }}
-            animate={ready ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1, delay: 0.1, ease }}
-          >
-            <span className="h-px w-14 bg-gold" aria-hidden="true" />
-            <span className="eyebrow">
-              {hero.eyebrow} · <span lang="en">{hero.eyebrowEn}</span>
-            </span>
-          </motion.div>
-
           {ready && (
             <MaskText
               as="h1"

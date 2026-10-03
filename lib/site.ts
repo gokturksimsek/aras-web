@@ -93,9 +93,6 @@ export const approach = [
 ];
 
 export const hero = {
-  eyebrow: "ARAS İNŞAAT",
-  // İngilizce "Since" ayrı: lang="tr" altında büyük harfe "SİNCE" diye çevrilmesin.
-  eyebrowEn: "Since 1994",
   titleLines: ["1994'ten Bugüne", "İhtişamlı", "Yaşam Alanları"],
   text: "Ankara genelinde villa ve konut projelerinde, kaba inşaattan anahtar teslime kadar her detayı özenle ve güvenle inşa ediyoruz.",
 };
