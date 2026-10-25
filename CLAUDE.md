@@ -3,6 +3,13 @@
 Bu dosya projede çalışan herkesin ve Claude'un ortak başvuru kaynağıdır.
 Bir değişiklik yapmadan önce oku; kural değişirse bu dosyayı da güncelle.
 
+## Ajans standartları
+
+Kalite çıtası ve üç uzman ajan (3D_WebGL_Master · Premium_UIUX_Architect · Enterprise_Performance_Engineer) aşağıdaki dosyada.
+Kod yazmadan önce yanıtın ilk satırında işi hangi ajanın yürüttüğü yazılır. Bu dosyadaki projeye özgü kurallar önceliklidir.
+
+@agency_standards.md
+
 ## Proje özeti
 
 - **Müşteri:** ARAS İNŞAAT — Ankara. Slogan (logodan): *Özenle ve Güvenle*.
