@@ -55,7 +55,7 @@ export default function Projects({ no = "01", limit }: { no?: string; limit?: nu
   const current = open !== null ? list[open] : null;
 
   return (
-    <section id="projeler" className="relative bg-anthracite py-[clamp(6rem,12vw,10rem)]">
+    <section id="projeler" className="relative bg-anthracite section-y">
       <div className="container-lux">
         <div className="mb-14 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
@@ -79,7 +79,7 @@ export default function Projects({ no = "01", limit }: { no?: string; limit?: nu
                   aria-selected={filter === f}
                   onClick={() => setFilter(f)}
                   className={clsx(
-                    "relative min-h-11 text-[0.7rem] font-semibold tracking-[0.24em] uppercase transition-colors duration-500",
+                    "relative min-h-11 text-[0.7rem] font-semibold tracking-[0.24em] uppercase transition-colors duration-[900ms]",
                     filter === f ? "text-gold-hi" : "text-stone hover:text-ivory",
                   )}
                 >
@@ -88,7 +88,7 @@ export default function Projects({ no = "01", limit }: { no?: string; limit?: nu
                     <motion.span
                       layoutId="filter-line"
                       className="absolute inset-x-0 bottom-2 h-px bg-gold"
-                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 0.9, ease: [0.65, 0.05, 0.36, 1] }}
                     />
                   )}
                 </button>
@@ -100,7 +100,7 @@ export default function Projects({ no = "01", limit }: { no?: string; limit?: nu
 
         {/* Masonry: CSS sütunları */}
         {/* Filtre değişince liste key ile yeniden kurulur ve kartlar sırayla belirir. */}
-        <ul key={filter} className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>li]:mb-5">
+        <ul key={filter} className="columns-1 gap-6 sm:columns-2 lg:columns-3 lg:gap-8 [&>li]:mb-6 lg:[&>li]:mb-8">
               {list.map((p, i) => (
                 <motion.li
                   key={p.src}
@@ -113,7 +113,7 @@ export default function Projects({ no = "01", limit }: { no?: string; limit?: nu
                   <button
                     type="button"
                     onClick={() => setOpen(i)}
-                    className={clsx("group relative block w-full overflow-hidden text-left", ratioClass[p.ratio])}
+                    className={clsx("group relative block w-full overflow-hidden text-left shadow-lux-sm transition-shadow duration-[1200ms] ease-lux hover:shadow-lux-glow", ratioClass[p.ratio])}
                     aria-label={`${p.title} görselini büyüt`}
                   >
                     <Image
@@ -124,20 +124,20 @@ export default function Projects({ no = "01", limit }: { no?: string; limit?: nu
                       className="object-cover transition-transform duration-[1600ms] ease-lux group-hover:scale-[1.07]"
                     />
                     <div
-                      className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent opacity-70 transition-opacity duration-700 group-hover:opacity-100"
+                      className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent opacity-70 transition-opacity duration-1000 group-hover:opacity-100"
                       aria-hidden="true"
                     />
                     {/* İnce iç çerçeve */}
                     <span
-                      className="absolute inset-4 border border-gold/0 transition-all duration-700 ease-lux group-hover:inset-3 group-hover:border-gold/50"
+                      className="absolute inset-4 border border-gold/0 transition-all duration-1000 ease-lux group-hover:inset-3 group-hover:border-gold/50"
                       aria-hidden="true"
                     />
-                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-7">
-                      <div className="translate-y-2 transition-transform duration-700 ease-lux group-hover:translate-y-0">
+                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-8">
+                      <div className="translate-y-2 transition-transform duration-1000 ease-lux group-hover:translate-y-0">
                         <p className="eyebrow !text-[0.6rem]">{p.category}</p>
                         <p className="mt-2 font-serif text-2xl font-light text-ivory">{p.title}</p>
                       </div>
-                      <span className="grid size-11 scale-75 place-items-center rounded-full border border-gold/60 text-gold opacity-0 transition-all duration-700 ease-lux group-hover:scale-100 group-hover:opacity-100">
+                      <span className="grid size-11 scale-75 place-items-center border border-gold/60 text-gold opacity-0 transition-all duration-1000 ease-lux group-hover:scale-100 group-hover:opacity-100">
                         <Plus className="size-4" aria-hidden="true" />
                       </span>
                     </div>
@@ -169,7 +169,7 @@ export default function Projects({ no = "01", limit }: { no?: string; limit?: nu
               <button
                 type="button"
                 onClick={() => setOpen(null)}
-                className="grid size-12 place-items-center rounded-full border border-white/20 text-ivory transition-colors hover:border-gold hover:text-gold"
+                className="grid size-12 place-items-center border border-white/20 text-ivory transition-colors hover:border-gold hover:text-gold"
                 aria-label="Kapat"
                 autoFocus
               >
@@ -193,7 +193,7 @@ export default function Projects({ no = "01", limit }: { no?: string; limit?: nu
                   <button
                     type="button"
                     onClick={() => step(-1)}
-                    className="absolute left-2 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-ink/60 text-ivory transition-colors hover:border-gold hover:text-gold sm:left-6"
+                    className="absolute left-2 top-1/2 grid size-12 -translate-y-1/2 place-items-center border border-white/20 bg-ink/60 text-ivory transition-colors hover:border-gold hover:text-gold sm:left-6"
                     aria-label="Önceki görsel"
                   >
                     <ChevronLeft className="size-5" aria-hidden="true" />
@@ -201,7 +201,7 @@ export default function Projects({ no = "01", limit }: { no?: string; limit?: nu
                   <button
                     type="button"
                     onClick={() => step(1)}
-                    className="absolute right-2 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-ink/60 text-ivory transition-colors hover:border-gold hover:text-gold sm:right-6"
+                    className="absolute right-2 top-1/2 grid size-12 -translate-y-1/2 place-items-center border border-white/20 bg-ink/60 text-ivory transition-colors hover:border-gold hover:text-gold sm:right-6"
                     aria-label="Sonraki görsel"
                   >
                     <ChevronRight className="size-5" aria-hidden="true" />

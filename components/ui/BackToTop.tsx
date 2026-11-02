@@ -14,7 +14,7 @@ export default function BackToTop() {
       aria-label="Sayfanın başına dön"
     >
       Yukarı
-      <ArrowUp className="size-4 transition-transform duration-500 group-hover:-translate-y-1" aria-hidden="true" />
+      <ArrowUp className="size-4 transition-transform duration-[900ms] group-hover:-translate-y-1" aria-hidden="true" />
     </button>
   );
 }

@@ -109,8 +109,8 @@ export default function Contact({ no = "01" }: { no?: string }) {
   ].filter(Boolean) as { icon: typeof MapPin; label: string; value: string; href?: string }[];
 
   return (
-    <section id="iletisim" className="relative overflow-hidden bg-ink py-[clamp(6rem,12vw,10rem)]">
-      <div className="container-lux grid gap-16 lg:grid-cols-12 lg:gap-12">
+    <section id="iletisim" className="relative overflow-hidden bg-ink section-y">
+      <div className="container-lux grid gap-20 lg:grid-cols-12 lg:gap-16">
         {/* Sol: bilgiler */}
         <div className="lg:col-span-5">
           <SectionHeading
@@ -125,11 +125,11 @@ export default function Contact({ no = "01" }: { no?: string }) {
             </p>
           </Reveal>
 
-          <ul className="mt-12 space-y-px">
+          <ul className="mt-14 space-y-px">
             {info.map((it, i) => (
               <Reveal key={it.label} delay={0.1 * i}>
-                <li className="flex items-center gap-5 border-t border-white/10 py-6">
-                  <span className="grid size-12 shrink-0 place-items-center rounded-full border border-gold/40 text-gold">
+                <li className="flex items-center gap-5 border-t border-white/10 py-7">
+                  <span className="grid size-12 shrink-0 place-items-center border border-gold/40 text-gold">
                     <it.icon className="size-5" strokeWidth={1.4} aria-hidden="true" />
                   </span>
                   <div>
@@ -151,11 +151,11 @@ export default function Contact({ no = "01" }: { no?: string }) {
               href={site.instagram.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative mt-6 flex items-center justify-between overflow-hidden border border-gold/30 p-6 transition-colors duration-700 hover:border-gold"
+              className="group relative mt-8 flex items-center justify-between overflow-hidden border border-gold/30 p-7 shadow-lux-sm transition-[border-color,box-shadow] duration-[1200ms] ease-lux hover:border-gold hover:shadow-lux-glow"
             >
-              <span className="absolute inset-0 origin-bottom scale-y-0 bg-gradient-to-br from-gold-lo/25 via-transparent to-transparent transition-transform duration-700 ease-lux group-hover:scale-y-100" aria-hidden="true" />
+              <span className="absolute inset-0 origin-bottom scale-y-0 bg-gradient-to-br from-gold-lo/25 via-transparent to-transparent transition-transform duration-1000 ease-lux group-hover:scale-y-100" aria-hidden="true" />
               <span className="relative flex items-center gap-5">
-                <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-gold-lo via-gold to-gold-hi text-ink">
+                <span className="grid size-12 place-items-center bg-gradient-to-br from-gold-lo via-gold to-gold-hi text-ink">
                   <InstagramIcon className="size-5" />
                 </span>
                 <span>
@@ -163,19 +163,19 @@ export default function Contact({ no = "01" }: { no?: string }) {
                   <span className="mt-1 block font-serif text-xl text-ivory">{site.instagram.handle}</span>
                 </span>
               </span>
-              <ArrowUpRight className="relative size-5 text-gold transition-transform duration-500 ease-lux group-hover:-translate-y-1 group-hover:translate-x-1" aria-hidden="true" />
+              <ArrowUpRight className="relative size-5 text-gold transition-transform duration-[900ms] ease-lux group-hover:-translate-y-1 group-hover:translate-x-1" aria-hidden="true" />
             </a>
           </Reveal>
         </div>
 
         {/* Sağ: form */}
         <Reveal delay={0.1} className="lg:col-span-7 lg:pl-12">
-          <div className="relative border border-white/10 bg-anthracite p-7 sm:p-12">
+          <div className="relative border border-white/10 bg-anthracite p-8 shadow-lux-lg sm:p-14">
             <span className="absolute -top-px left-10 h-px w-24 bg-gold" aria-hidden="true" />
             <h3 className="font-serif text-3xl font-light text-ivory">Bilgi ve İletişim Formu</h3>
             <p className="mt-2 text-sm text-stone">* işaretli alanlar zorunludur.</p>
 
-            <form onSubmit={onSubmit} noValidate className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            <form onSubmit={onSubmit} noValidate className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
               <Field label="Ad Soyad *" name="name" error={errors.name} autoComplete="name" />
               <Field label="Telefon" name="phone" type="tel" error={errors.phone} autoComplete="tel" />
               <Field label="E-posta" name="email" type="email" error={errors.email} autoComplete="email" />

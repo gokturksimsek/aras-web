@@ -33,7 +33,7 @@ export default function MaskText({
             className={clsx("block", lineClassName?.(i))}
             initial={{ y: "110%" }}
             animate={show ? { y: "0%" } : undefined}
-            transition={{ duration: 1.2, delay: delay + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, delay: delay + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
           >
             {line}
           </motion.span>

@@ -48,8 +48,8 @@ function LogoMask({
       className={clsx("relative block shrink-0", className)}
       style={{ ...mask, width: `calc(${w * scale}px * var(--logo-scale, 1))`, height: `calc(${h * scale}px * var(--logo-scale, 1))` }}
     >
-      <span className="absolute inset-0 bg-sand/85 transition-opacity duration-700 ease-lux group-hover:opacity-0" />
-      <span className="absolute inset-0 bg-gradient-to-r from-gold-lo via-gold-hi to-gold opacity-0 transition-opacity duration-700 ease-lux group-hover:opacity-100" />
+      <span className="absolute inset-0 bg-sand/85 transition-opacity duration-1000 ease-lux group-hover:opacity-0" />
+      <span className="absolute inset-0 bg-gradient-to-r from-gold-lo via-gold-hi to-gold opacity-0 transition-opacity duration-1000 ease-lux group-hover:opacity-100" />
     </span>
   );
 }
@@ -66,7 +66,7 @@ function PartnerCard({ p, i }: { p: (typeof references.partners)[number]; i: num
     <>
       {/* İmleci izleyen ışık */}
       <span
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-1000 group-hover:opacity-100"
         style={{
           background:
             "radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, var(--color-gold) 14%, transparent), transparent 65%)",
@@ -74,10 +74,10 @@ function PartnerCard({ p, i }: { p: (typeof references.partners)[number]; i: num
         aria-hidden="true"
       />
       {/* Köşe çizgileri */}
-      <span className="absolute left-0 top-0 h-px w-10 origin-left bg-gold transition-transform duration-700 ease-lux group-hover:scale-x-[2.2]" aria-hidden="true" />
-      <span className="absolute left-0 top-0 h-10 w-px origin-top bg-gold transition-transform duration-700 ease-lux group-hover:scale-y-[2.2]" aria-hidden="true" />
-      <span className="absolute bottom-0 right-0 h-px w-10 origin-right bg-gold/50 transition-transform duration-700 ease-lux group-hover:scale-x-[2.2]" aria-hidden="true" />
-      <span className="absolute bottom-0 right-0 h-10 w-px origin-bottom bg-gold/50 transition-transform duration-700 ease-lux group-hover:scale-y-[2.2]" aria-hidden="true" />
+      <span className="absolute left-0 top-0 h-px w-10 origin-left bg-gold transition-transform duration-1000 ease-lux group-hover:scale-x-[2.2]" aria-hidden="true" />
+      <span className="absolute left-0 top-0 h-10 w-px origin-top bg-gold transition-transform duration-1000 ease-lux group-hover:scale-y-[2.2]" aria-hidden="true" />
+      <span className="absolute bottom-0 right-0 h-px w-10 origin-right bg-gold/50 transition-transform duration-1000 ease-lux group-hover:scale-x-[2.2]" aria-hidden="true" />
+      <span className="absolute bottom-0 right-0 h-10 w-px origin-bottom bg-gold/50 transition-transform duration-1000 ease-lux group-hover:scale-y-[2.2]" aria-hidden="true" />
 
       <div className="relative flex items-start justify-between">
         <span className="font-serif text-lg italic text-gold">0{i + 1}</span>
@@ -90,17 +90,17 @@ function PartnerCard({ p, i }: { p: (typeof references.partners)[number]; i: num
           name={p.name}
           ratio={p.ratio}
           area={9000}
-          className="transition-transform duration-1000 ease-lux group-hover:scale-[1.06]"
+          className="transition-transform duration-[1200ms] ease-lux group-hover:scale-[1.06]"
         />
       </div>
 
-      <div className="relative flex items-end justify-between gap-4 border-t border-white/10 pt-5">
+      <div className="relative flex items-end justify-between gap-4 border-t border-white/10 pt-6">
         <div>
           <p className="text-[0.6rem] font-semibold tracking-[0.3em] text-stone uppercase">İş Ortağı</p>
           <p className="mt-1 font-serif text-2xl font-light text-ivory">{p.name}</p>
         </div>
         {p.url && (
-          <span className="grid size-11 shrink-0 place-items-center rounded-full border border-gold/40 text-gold transition-all duration-500 ease-lux group-hover:border-gold group-hover:bg-gold group-hover:text-ink">
+          <span className="grid size-11 shrink-0 place-items-center border border-gold/40 text-gold transition-all duration-[900ms] ease-lux group-hover:border-gold group-hover:bg-gold group-hover:text-ink">
             <ArrowUpRight className="size-4" aria-hidden="true" />
           </span>
         )}
@@ -109,7 +109,7 @@ function PartnerCard({ p, i }: { p: (typeof references.partners)[number]; i: num
   );
 
   const cls =
-    "group relative flex h-full min-h-[18rem] flex-col sm:min-h-[22rem] overflow-hidden border border-white/10 bg-gradient-to-b from-graphite/60 to-anthracite p-7 transition-colors duration-700 hover:border-gold/40 sm:p-9";
+    "group relative flex h-full min-h-[18rem] flex-col sm:min-h-[24rem] overflow-hidden border border-white/10 bg-gradient-to-b from-graphite/60 to-anthracite p-8 shadow-lux-sm transition-[border-color,box-shadow] duration-[1200ms] ease-lux hover:border-gold/40 hover:shadow-lux-glow sm:p-11";
 
   return (
     <motion.div
@@ -119,7 +119,7 @@ function PartnerCard({ p, i }: { p: (typeof references.partners)[number]; i: num
       transition={{ duration: 1.3, delay: i * 0.15, ease }}
       className="h-full"
     >
-      <Tilt className="h-full" max={6}>
+      <Tilt className="h-full" max={4}>
       {p.url ? (
         <a
           href={p.url}
@@ -176,7 +176,7 @@ export default function References({ no = "01", compact = false }: { no?: string
   return (
     <section
       id="referanslar"
-      className="relative overflow-hidden bg-ink py-[clamp(6rem,12vw,10rem)] [--logo-scale:0.82] sm:[--logo-scale:1]"
+      className="relative overflow-hidden bg-ink section-y [--logo-scale:0.82] sm:[--logo-scale:1]"
     >
       {/* Arka plan: silik gold hale */}
       <div
@@ -210,7 +210,7 @@ export default function References({ no = "01", compact = false }: { no?: string
           <span className="eyebrow !text-[0.62rem]">İş Ortaklarımız</span>
           <span className="h-px flex-1 bg-gradient-to-r from-gold/40 to-transparent" aria-hidden="true" />
         </Reveal>
-        <div className="grid gap-5 lg:grid-cols-3">
+        <div className="grid gap-6 lg:gap-8 lg:grid-cols-3">
           {references.partners.map((p, i) => (
             <PartnerCard key={p.name} p={p} i={i} />
           ))}

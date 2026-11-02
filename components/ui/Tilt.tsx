@@ -9,7 +9,7 @@ import clsx from "clsx";
 export default function Tilt({
   children,
   className,
-  max = 7,
+  max = 5,
 }: {
   children: React.ReactNode;
   className?: string;
@@ -21,8 +21,9 @@ export default function Tilt({
 
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
-  const sx = useSpring(px, { stiffness: 160, damping: 18, mass: 0.4 });
-  const sy = useSpring(py, { stiffness: 160, damping: 18, mass: 0.4 });
+  // Aşırı sönümlü yay: salınım/zıplama yok, ağır ve pürüzsüz oturur.
+  const sx = useSpring(px, { stiffness: 55, damping: 24, mass: 1 });
+  const sy = useSpring(py, { stiffness: 55, damping: 24, mass: 1 });
   const rotateY = useTransform(sx, [0, 1], [-max, max]);
   const rotateX = useTransform(sy, [0, 1], [max, -max]);
   // Yüzeyde gezinen parlama
@@ -50,7 +51,7 @@ export default function Tilt({
         {on && (
           <motion.span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-500 group-hover/tilt:opacity-100"
+            className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-[900ms] group-hover/tilt:opacity-100"
             style={{ background: glare }}
           />
         )}

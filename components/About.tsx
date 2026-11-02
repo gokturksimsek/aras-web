@@ -26,7 +26,7 @@ export default function About({ no = "01", more = false }: { no?: string; more?:
   ];
 
   return (
-    <section id="kurumsal" ref={ref} className="relative overflow-hidden bg-anthracite py-[clamp(6rem,12vw,10rem)]">
+    <section id="kurumsal" ref={ref} className="relative overflow-hidden bg-anthracite section-y">
       <div className="container-lux grid gap-16 lg:grid-cols-12 lg:gap-12">
         {/* Görsel kompozisyonu */}
         <div className="relative lg:col-span-6">
@@ -46,7 +46,7 @@ export default function About({ no = "01", more = false }: { no?: string; more?:
 
           {/* Kuruluş rozeti */}
           <Reveal delay={0.3} className="absolute left-5 top-5 sm:-left-6 sm:top-10">
-            <div className="grid size-32 place-items-center rounded-full border border-gold/50 bg-ink/80 text-center backdrop-blur-md sm:size-36">
+            <div className="grid size-32 place-items-center border border-gold/50 bg-ink/80 text-center shadow-lux backdrop-blur-md sm:size-36">
               <div>
                 <p lang="en" className="eyebrow !text-[0.55rem]">Since</p>
                 <p className="font-serif text-4xl font-light text-gold-hi">{site.founded}</p>

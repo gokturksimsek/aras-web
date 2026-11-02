@@ -20,7 +20,7 @@ export default function Manifesto() {
   const words = manifesto.split(" ");
 
   return (
-    <section id="manifesto" className="relative overflow-hidden bg-ink py-[clamp(6rem,14vw,12rem)]">
+    <section id="manifesto" className="relative overflow-hidden bg-ink section-y-lg">
       <div className="container-lux">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 flex items-center gap-4">

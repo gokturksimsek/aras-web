@@ -30,7 +30,7 @@ export default function PageHero({
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section ref={ref} className="relative flex min-h-[64svh] items-end overflow-hidden bg-ink pt-40 pb-16 sm:min-h-[70svh] sm:pb-20">
+    <section ref={ref} className="relative flex min-h-[64svh] items-end overflow-hidden bg-ink pt-44 pb-20 sm:min-h-[72svh] sm:pb-28">
       {image && (
         <motion.div className="absolute inset-0" style={{ y }}>
           <motion.div
@@ -87,7 +87,7 @@ export default function PageHero({
           inView={false}
           delay={0.25}
           lines={[title[0], <span key="g" className="gold-text italic">{title[1]}</span>]}
-          className="max-w-5xl font-serif text-[clamp(2.8rem,7vw,6.5rem)] leading-[0.98] font-light tracking-[-0.015em] text-ivory"
+          className="max-w-5xl font-serif text-[clamp(2.8rem,7vw,6.5rem)] leading-[1] font-light tracking-[0.002em] text-ivory"
         />
 
         <motion.div

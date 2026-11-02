@@ -20,15 +20,15 @@ export default function SectionHeading({
     <div className={clsx(align === "center" && "text-center", className)}>
       <Reveal
         y={16}
-        className={clsx("mb-6 flex items-center gap-4", align === "center" && "justify-center")}
+        className={clsx("mb-8 flex items-center gap-5", align === "center" && "justify-center")}
       >
         <span className="font-serif text-sm italic text-gold">{no}</span>
-        <span className="h-px w-12 bg-gold/60" aria-hidden="true" />
+        <span className="h-px w-16 bg-gold/60" aria-hidden="true" />
         <span className="eyebrow">{eyebrow}</span>
       </Reveal>
       <MaskText
         lines={title}
-        className="font-serif text-[clamp(2.4rem,5.4vw,4.75rem)] font-light leading-[1.02] tracking-[-0.01em] text-ivory"
+        className="font-serif text-[clamp(2.4rem,5.4vw,4.75rem)] font-light leading-[1.04] tracking-[0.004em] text-ivory"
       />
     </div>
   );

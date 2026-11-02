@@ -13,7 +13,7 @@ export default function Footer() {
     <footer className="relative overflow-hidden border-t border-gold/15 bg-anthracite">
       <div className="hairline absolute inset-x-0 top-0 h-px opacity-60" aria-hidden="true" />
 
-      <div className="container-lux grid gap-14 py-20 md:grid-cols-2 lg:grid-cols-12">
+      <div className="container-lux grid gap-16 py-28 md:grid-cols-2 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-4">
           <Image src="/img/aras-logo.png" alt="ARAS İNŞAAT — Özenle ve Güvenle, Since 1994" width={146} height={160} className="h-40 w-auto" />
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-stone">{site.description}</p>
@@ -67,7 +67,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-3 text-sm text-mist/75 transition-colors hover:text-gold-hi"
           >
-            <span className="grid size-11 place-items-center rounded-full border border-gold/40 text-gold transition-colors group-hover:border-gold group-hover:bg-gold group-hover:text-ink">
+            <span className="grid size-11 place-items-center border border-gold/40 text-gold transition-colors group-hover:border-gold group-hover:bg-gold group-hover:text-ink">
               <InstagramIcon className="size-4" />
             </span>
             {site.instagram.handle}

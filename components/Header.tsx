@@ -60,7 +60,7 @@ export default function Header() {
         {/* Üst bilgi şeridi */}
         <div
           className={clsx(
-            "hidden overflow-hidden border-b border-gold/15 transition-all duration-700 ease-lux md:block",
+            "hidden overflow-hidden border-b border-gold/15 transition-all duration-1000 ease-lux md:block",
             scrolled ? "max-h-0 opacity-0" : "max-h-12 bg-ink/40 opacity-100",
           )}
         >
@@ -100,15 +100,15 @@ export default function Header() {
         {/* Ana bar */}
         <div
           className={clsx(
-            "transition-all duration-700 ease-lux",
+            "transition-all duration-1000 ease-lux",
             scrolled
-              ? "border-b border-gold/10 bg-ink/95 shadow-[0_10px_40px_-10px_rgb(0_0_0/0.6)] backdrop-blur-xl"
+              ? "border-b border-gold/10 bg-ink/95 shadow-lux backdrop-blur-xl"
               : "bg-gradient-to-b from-ink/70 to-transparent",
           )}
         >
           <div
             className={clsx(
-              "container-lux flex items-center justify-between transition-all duration-700 ease-lux",
+              "container-lux flex items-center justify-between transition-all duration-1000 ease-lux",
               scrolled ? "h-[4.5rem]" : "h-24",
             )}
           >
@@ -125,14 +125,14 @@ export default function Header() {
                         href={n.href}
                         aria-current={on ? "page" : undefined}
                         className={clsx(
-                          "group relative py-2 text-[0.72rem] font-semibold tracking-[0.22em] uppercase transition-colors duration-500",
+                          "group relative py-2 text-[0.72rem] font-semibold tracking-[0.22em] uppercase transition-colors duration-[900ms]",
                           on ? "text-gold-hi" : "text-mist/80 hover:text-ivory",
                         )}
                       >
                         {n.label}
                         <span
                           className={clsx(
-                            "absolute -bottom-0.5 left-0 h-px w-full origin-left bg-gold transition-transform duration-700 ease-lux",
+                            "absolute -bottom-0.5 left-0 h-px w-full origin-left bg-gold transition-transform duration-1000 ease-lux",
                             on ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
                           )}
                           aria-hidden="true"
@@ -155,13 +155,13 @@ export default function Header() {
               <span className="relative block h-3.5 w-7">
                 <span
                   className={clsx(
-                    "absolute left-0 h-px w-full bg-ivory transition-all duration-500 ease-lux",
+                    "absolute left-0 h-px w-full bg-ivory transition-all duration-[900ms] ease-lux",
                     open ? "top-1/2 rotate-45" : "top-0",
                   )}
                 />
                 <span
                   className={clsx(
-                    "absolute right-0 h-px bg-gold transition-all duration-500 ease-lux",
+                    "absolute right-0 h-px bg-gold transition-all duration-[900ms] ease-lux",
                     open ? "top-1/2 w-full -rotate-45" : "top-full w-4",
                   )}
                 />

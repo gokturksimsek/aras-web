@@ -41,7 +41,7 @@ export default function Scope({ no = "02" }: { no?: string }) {
   const current = disciplines[stage];
 
   return (
-    <section id="kapsam" className="relative bg-anthracite pt-[clamp(6rem,12vw,10rem)]">
+    <section id="kapsam" className="relative bg-anthracite pt-[clamp(7.5rem,15vw,13.5rem)]">
       <div className="container-lux">
         <div className="mb-14 grid gap-10 lg:mb-20 lg:grid-cols-12 lg:items-end">
           <SectionHeading
@@ -91,7 +91,7 @@ export default function Scope({ no = "02" }: { no?: string }) {
                         initial={{ y: 18, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -18, opacity: 0 }}
-                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 0.8, ease: [0.65, 0.05, 0.36, 1] }}
                       >
                         {current.no}
                       </motion.span>
@@ -108,7 +108,7 @@ export default function Scope({ no = "02" }: { no?: string }) {
                   <span key={d.no} className="relative h-px flex-1 overflow-hidden bg-white/15">
                     <span
                       className={clsx(
-                        "absolute inset-0 origin-left bg-gold transition-transform duration-700 ease-lux",
+                        "absolute inset-0 origin-left bg-gold transition-transform duration-1000 ease-lux",
                         i <= stage ? "scale-x-100" : "scale-x-0",
                       )}
                     />
@@ -130,7 +130,7 @@ export default function Scope({ no = "02" }: { no?: string }) {
               data-stage={i}
               className="flex min-h-[78svh] items-center border-b border-white/[0.07] py-16 last:border-b-0 lg:min-h-[92svh]"
             >
-              <div className={clsx("transition-opacity duration-700", stage === i ? "opacity-100" : "opacity-35")}>
+              <div className={clsx("transition-opacity duration-1000", stage === i ? "opacity-100" : "opacity-35")}>
                 <div className="mb-5 flex items-center gap-4">
                   <span className="font-serif text-lg italic text-gold">{d.no}</span>
                   <span className="h-px w-10 bg-gold/60" aria-hidden="true" />

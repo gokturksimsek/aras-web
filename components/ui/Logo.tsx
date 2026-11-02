@@ -21,7 +21,7 @@ export default function Logo({
         height={120}
         preload
         className={clsx(
-          "w-auto transition-all duration-700 ease-lux group-hover:scale-105",
+          "w-auto transition-all duration-1000 ease-lux group-hover:scale-105",
           compact ? "h-11" : "h-12 sm:h-14",
         )}
       />

@@ -18,9 +18,9 @@ export default function Services({ no = "01", more = false }: { no?: string; mor
   const [active, setActive] = useState(0);
 
   return (
-    <section id="uzmanliklar" className="relative bg-ink py-[clamp(6rem,12vw,10rem)]">
+    <section id="uzmanliklar" className="relative bg-ink section-y">
       <div className="container-lux">
-        <div className="mb-16 grid gap-10 lg:mb-20 lg:grid-cols-12 lg:items-end">
+        <div className="mb-20 grid gap-12 lg:mb-28 lg:grid-cols-12 lg:items-end">
           <SectionHeading
             no={no}
             eyebrow="Uzmanlıklarımız"
@@ -41,7 +41,7 @@ export default function Services({ no = "01", more = false }: { no?: string; mor
         </div>
 
         {/* Geniş masaüstü (≥1280): genişleyen paneller */}
-        <Reveal className="hidden h-[min(78vh,760px)] gap-3 xl:flex">
+        <Reveal className="hidden h-[min(80vh,800px)] gap-4 xl:flex">
           {services.map((s, i) => {
             const Icon = icons[s.icon];
             const on = active === i;
@@ -52,7 +52,7 @@ export default function Services({ no = "01", more = false }: { no?: string; mor
                 onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
                 className={clsx(
-                  "group relative cursor-default overflow-hidden transition-[flex-grow] duration-[1100ms] ease-lux outline-none focus-visible:ring-1 focus-visible:ring-gold",
+                  "group relative cursor-default overflow-hidden shadow-lux transition-[flex-grow] duration-[1400ms] ease-lux outline-none focus-visible:ring-1 focus-visible:ring-gold",
                   on ? "grow-[3.2]" : "grow",
                 )}
                 style={{ flexBasis: 0 }}
@@ -69,7 +69,7 @@ export default function Services({ no = "01", more = false }: { no?: string; mor
                 />
                 <div
                   className={clsx(
-                    "absolute inset-0 transition-colors duration-1000 ease-lux",
+                    "absolute inset-0 transition-colors duration-[1200ms] ease-lux",
                     on ? "bg-gradient-to-t from-ink via-ink/35 to-ink/10" : "bg-ink/65",
                   )}
                   aria-hidden="true"
@@ -77,18 +77,18 @@ export default function Services({ no = "01", more = false }: { no?: string; mor
                 {/* Gold çerçeve çizgisi */}
                 <span
                   className={clsx(
-                    "absolute inset-x-0 top-0 h-px origin-left bg-gold transition-transform duration-1000 ease-lux",
+                    "absolute inset-x-0 top-0 h-px origin-left bg-gold transition-transform duration-[1200ms] ease-lux",
                     on ? "scale-x-100" : "scale-x-0",
                   )}
                   aria-hidden="true"
                 />
 
-                <div className="absolute inset-0 flex flex-col justify-between p-7 2xl:p-10">
+                <div className="absolute inset-0 flex flex-col justify-between p-8 2xl:p-12">
                   <div className="flex items-start justify-between">
                     <span className="font-serif text-5xl font-light text-ivory/90">{s.no}</span>
                     <span
                       className={clsx(
-                        "grid size-12 place-items-center rounded-full border transition-colors duration-700",
+                        "grid size-12 place-items-center border transition-colors duration-1000",
                         on ? "border-gold bg-gold text-ink" : "border-white/25 text-gold",
                       )}
                     >
@@ -99,7 +99,7 @@ export default function Services({ no = "01", more = false }: { no?: string; mor
                   <div>
                     <h3
                       className={clsx(
-                        "font-serif font-light text-ivory transition-all duration-1000 ease-lux",
+                        "font-serif font-light text-ivory transition-all duration-[1200ms] ease-lux",
                         on ? "text-[2.6rem] leading-[1.05]" : "text-[1.45rem] leading-tight 2xl:text-[1.7rem]",
                       )}
                     >
@@ -107,7 +107,7 @@ export default function Services({ no = "01", more = false }: { no?: string; mor
                     </h3>
                     <div
                       className={clsx(
-                        "grid transition-all duration-1000 ease-lux",
+                        "grid transition-all duration-[1200ms] ease-lux",
                         on ? "mt-5 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
                       )}
                     >
@@ -129,12 +129,12 @@ export default function Services({ no = "01", more = false }: { no?: string; mor
         </Reveal>
 
         {/* Mobil / tablet / küçük dizüstü: kartlar */}
-        <div className="grid gap-5 md:grid-cols-2 xl:hidden">
+        <div className="grid gap-6 lg:gap-8 md:grid-cols-2 xl:hidden">
           {services.map((s, i) => {
             const Icon = icons[s.icon];
             return (
               <Reveal key={s.id} delay={(i % 2) * 0.1}>
-                <article className="group relative flex h-full flex-col overflow-hidden border border-white/10 bg-anthracite">
+                <article className="group relative flex h-full flex-col overflow-hidden border border-white/10 bg-anthracite shadow-lux-sm transition-[border-color,box-shadow] duration-[1200ms] ease-lux hover:border-gold/30 hover:shadow-lux-glow">
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={img[s.image].src}
@@ -146,9 +146,9 @@ export default function Services({ no = "01", more = false }: { no?: string; mor
                     <div className="absolute inset-0 bg-gradient-to-t from-anthracite via-transparent to-transparent" aria-hidden="true" />
                     <span className="absolute left-6 top-5 font-serif text-4xl font-light text-ivory">{s.no}</span>
                   </div>
-                  <div className="flex flex-1 flex-col p-7 pt-2">
+                  <div className="flex flex-1 flex-col p-8 pt-3 sm:p-10 sm:pt-4">
                     <Icon className="mb-4 size-6 text-gold" strokeWidth={1.4} aria-hidden="true" />
-                    <h3 className="font-serif text-[1.9rem] leading-tight font-light text-ivory">{s.title}</h3>
+                    <h3 className="font-serif text-[1.9rem] leading-tight font-normal tracking-[0.004em] text-ivory">{s.title}</h3>
                     <p className="mt-4 text-[0.95rem] leading-relaxed text-mist/75">{s.text}</p>
                     <a
                       href={contactHref(s.topic)}
@@ -161,7 +161,7 @@ export default function Services({ no = "01", more = false }: { no?: string; mor
                       initial={{ scaleX: 0 }}
                       whileInView={{ scaleX: 1 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                       aria-hidden="true"
                     />
                   </div>

@@ -109,9 +109,11 @@ Yıllık tecrübe sayısı `new Date().getFullYear() - 1994` ile hesaplanır; el
   - Metin: `stone` (ikincil)
   - Vurgu: `gold` (#d3a971 — logodaki ton), `gold-hi`, `gold-lo`, `bronze`
 - Gold **vurgu** rengidir: ince çizgi, ikon, küçük etiket, buton kenarı, hover. Büyük alanları gold ile doldurma.
-- Tipografi: `font-serif` adı korunuyor ama artık Helvetica/Inter Tight başlık yazı tipi (ince 300, sıkı harf aralığı); gövde `font-sans` aynı aile. `font-serif italic` ve `gold-text italic` otomatik **Roboto Slab** olur (globals.css). Sıra önemli: Windows "Helvetica"yı Arial'a çevirir, bu yüzden yığında Inter Tight "Helvetica"dan önce. Küçük üst etiketler: `eyebrow` sınıfı (büyük harf, geniş harf aralığı, gold).
-- Köşeler keskin veya çok az yuvarlak (lüks mimari hissi). Butonlar dikdörtgen, ince kenarlı.
-- Hareketler `ease-lux` eğrisiyle (`[0.22, 1, 0.36, 1]`), yavaş ve akıcı (0.6–1.4 sn). Zıplama/dönme yok.
+- Tipografi: `font-serif` adı korunuyor ama artık Helvetica/Inter Tight başlık yazı tipi (büyük başlık ince 300, kart başlıkları 400; harf aralığı nötre yakın, hafif açık ≈ 0 / +0.004em); gövde `font-sans` aynı aile. `font-serif italic` ve `gold-text italic` otomatik **Roboto Slab** olur (globals.css). Sıra önemli: Windows "Helvetica"yı Arial'a çevirir, bu yüzden yığında Inter Tight "Helvetica"dan önce. Küçük üst etiketler: `eyebrow` sınıfı (büyük harf, geniş harf aralığı, gold).
+- Köşeler **keskin**: `rounded-*` kullanma (ikon kutuları dahil kare). `@theme` radius ölçeği 1–2px'e çekili. Butonlar dikdörtgen, ince kenarlı (`btn-lux`: 60px yükseklik, geniş harf aralığı).
+- **Boşluk:** bölümler `section-y` (büyük bantlar `section-y-lg`), başlık altı `mb-20 lg:mb-28`, ızgara `gap-6 lg:gap-8`, kart iç boşluğu `p-8`–`p-11`. Yeni bölüm bu ölçekten şaşmasın.
+- **Gölge:** yalnızca `shadow-lux-sm` · `shadow-lux` · `shadow-lux-lg` · hover için `shadow-lux-glow` (derin siyah + çok hafif gold hale). Tailwind'in hazır `shadow-lg` vb. kullanılmaz.
+- **Hareket:** CSS geçişleri `ease-lux` = sinematik ease-in-out (`cubic-bezier(0.65, 0.05, 0.36, 1)`), 0.9–1.4 sn; süresiz `transition` sınıfı varsayılan 900ms. Motion giriş (reveal) animasyonları yumuşak yavaşlama `[0.22, 1, 0.36, 1]` (`--ease-reveal`) ile 1.3–1.4 sn. `Tilt` yayı aşırı sönümlü (salınım yok). Zıplama/dönme yok.
 - **Uydurma içerik yok:** sahte istatistik ("500+ proje"), sahte referans/müşteri adı, uydurma ödül/sertifika, sahte telefon/adres ekleme. Müşteriden gelmeyen bilgi siteye girmez.
 - Görseller şu an **Unsplash yer tutucularıdır** (`lib/images.ts`). Proje adları bu yüzden genel ("Modern Villa" vb.). Gerçek proje fotoğrafları gelince `public/img/projeler/` altına koyup `lib/images.ts`'i güncelle.
 

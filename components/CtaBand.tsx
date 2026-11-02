@@ -16,7 +16,7 @@ export default function CtaBand() {
   const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-[clamp(7rem,16vw,13rem)]">
+    <section ref={ref} className="relative overflow-hidden section-y-lg">
       <motion.div className="absolute -inset-y-[20%] inset-x-0" style={{ y }}>
         <Image src={img.cta.src} alt="" fill sizes="100vw" className="object-cover" />
       </motion.div>
