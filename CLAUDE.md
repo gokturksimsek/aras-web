@@ -10,6 +10,12 @@ Kod yazmadan önce yanıtın ilk satırında işi hangi ajanın yürüttüğü y
 
 @agency_standards.md
 
+## SEO & GEO ajanı (`@seo-agent`)
+
+`@seo-agent` komutunda veya SEO / sıralama / AI arama görünürlüğü odaklı her istekte aşağıdaki kurallar uygulanır (denetim → düzeltme → rapor). Projeye özgü sınırlar (uydurma veri yok, NAP `lib/site.ts`'ten, tek dil) dosyanın sonunda ve önceliklidir.
+
+@.claude/rules/seo-agent.md
+
 ## Proje özeti
 
 - **Müşteri:** ARAS İNŞAAT — Ankara. Slogan (logodan): *Özenle ve Güvenle*.
@@ -55,6 +61,7 @@ app/
   icon.png, apple-icon.png  Favicon ve iOS ana ekran simgesi (logodan üretildi)
   kvkk/page.tsx         KVKK Aydınlatma Metni sayfası (metin: lib/kvkk.ts)
   not-found.tsx         Markaya uygun 404 sayfası
+  robots.ts · sitemap.ts · opengraph-image.tsx · llms.txt/route.ts   SEO dosya kuralları (veri lib/seo.ts)
   api/iletisim/route.ts İletişim formu uç noktası
 components/
   SmoothScroll.tsx      Lenis + Motion'un "hareketi azalt" ayarı
@@ -79,6 +86,7 @@ components/
   three/                3D: Stage (ortak tuval), Grow (inşa animasyonu), VillaScene + HeroCanvas, BuildScene + BuildCanvas, webgl.ts
 lib/
   site.ts               **Firma bilgileri ve tüm içerik verisi (tek doğru kaynak)**
+  seo.ts                Kök URL (siteUrl), pageMeta(), JSON-LD (organizationLd, pageLd), llmsTxt()
   images.ts             Görsel URL'leri (Unsplash yer tutucular)
   kvkk.ts               KVKK aydınlatma metni (genel şablon — hukuki kontrol önerilir)
   palette.ts            3D sahneler için tema renklerinin JS kopyası (globals.css ile aynı tutulur)
@@ -97,7 +105,7 @@ ARAS logo.png           Müşteriden gelen orijinal logo — silme
 - **E-posta:** erbakanaras@gmail.com
 - **Açık adres:** *henüz yok*
 
-Bu alanlar `lib/site.ts`'ten okunur: üst şerit, mobil menü, iletişim bölümü, footer, mobil "Hemen Ara" butonu, form hata mesajı ve `app/layout.tsx` JSON-LD (JSON-LD'deki `telephone` uluslararası biçimde ayrıca yazılı). Boş bırakılan alan sitede gösterilmez.
+Bu alanlar `lib/site.ts`'ten okunur: üst şerit, mobil menü, iletişim bölümü, footer, mobil "Hemen Ara" butonu, form hata mesajı, JSON-LD ve `/llms.txt` (`lib/seo.ts`; telefon `+90` biçimine otomatik çevrilir). Boş bırakılan alan sitede gösterilmez.
 
 Yıllık tecrübe sayısı `new Date().getFullYear() - 1994` ile hesaplanır; elle yazılmaz.
 
@@ -195,11 +203,11 @@ Vercel önerilir (Next.js'in yerel ortamı). Ortam değişkenlerini Vercel panel
 
 - [ ] Açık adres → `lib/site.ts`
 - [ ] Gerçek proje fotoğrafları → galeri ve hizmet görselleri
-- [ ] Alan adı kesinleşince `metadataBase` + OG görseli
+- [ ] Alan adı kesinleşince Vercel'e `NEXT_PUBLIC_SITE_URL=https://alanadi` (metadataBase, canonical, sitemap, robots, llms.txt, JSON-LD bunu kullanır) → Search Console + Bing Webmaster'a sitemap gönder
+- [ ] Google İşletme Profili aç (açık adres gelince) — yerel aramada en büyük etki
 - [ ] Gmail Uygulama Şifresi → `.env.local` ve Vercel'e `SMTP_PASS` (form bunu kullanır; yoksa FormSubmit yedeği)
 - [ ] FormSubmit "Activate Form" e-postasını onayla (erbakanaras@gmail.com)
 - [ ] KVKK metnini hukukçuya kontrol ettir (`lib/kvkk.ts`)
-- [ ] Alan adı kesinleşince `robots.ts` + `sitemap.ts`
 - [ ] Logo vektör (SVG) hâli gelirse PNG'lerin yerine koy
 - [ ] Artı Grup SSL sertifikasını yenileyince referans kartına bağlantıyı aç
 

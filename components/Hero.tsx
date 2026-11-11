@@ -82,16 +82,15 @@ export default function Hero({ ready }: { ready: boolean }) {
         style={{ y: contentY, opacity: contentOpacity }}
       >
         <div className="pointer-events-auto max-w-4xl pt-28">
-          {ready && (
-            <MaskText
-              as="h1"
-              inView={false}
-              delay={0.2}
-              lines={hero.titleLines}
-              lineClassName={(i) => (i === 1 ? "gold-text italic pl-[0.6em] sm:pl-[1.2em]" : undefined)}
-              className="font-serif text-[clamp(2.7rem,6.2vw,6.1rem)] font-light leading-[1.02] tracking-[-0.012em] text-ivory [text-shadow:0_2px_40px_rgb(13_13_15/0.6)] short:text-[3rem]"
-            />
-          )}
+          <MaskText
+            as="h1"
+            inView={false}
+            play={ready}
+            delay={0.2}
+            lines={hero.titleLines}
+            lineClassName={(i) => (i === 1 ? "gold-text italic pl-[0.6em] sm:pl-[1.2em]" : undefined)}
+            className="font-serif text-[clamp(2.7rem,6.2vw,6.1rem)] font-light leading-[1.02] tracking-[-0.012em] text-ivory [text-shadow:0_2px_40px_rgb(13_13_15/0.6)] short:text-[3rem]"
+          />
 
           <motion.div
             className="mt-10 flex flex-col gap-8"

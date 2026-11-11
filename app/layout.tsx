@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import CallButton from "@/components/CallButton";
 import PageTransition from "@/components/PageTransition";
 import { site } from "@/lib/site";
+import { siteUrl, defaultTitle, organizationLd } from "@/lib/seo";
+import JsonLd from "@/components/ui/JsonLd";
 import "./globals.css";
 
 // Yazı tipleri farasinsaat.com ile aynı aile: Helvetica (başlık + metin) ve Roboto Slab (ikincil).
@@ -26,46 +28,42 @@ const robotoSlab = Roboto_Slab({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "ARAS İNŞAAT | 1994'ten Bugüne İhtişamlı Yaşam Alanları",
+    default: defaultTitle,
     template: "%s | ARAS İNŞAAT",
   },
   description: site.description,
+  applicationName: site.name,
+  authors: [{ name: site.name }],
+  creator: site.name,
+  publisher: site.name,
+  category: "construction",
   keywords: [
     "ARAS İnşaat",
-    "Ankara inşaat",
+    "Ankara inşaat firması",
     "villa projeleri Ankara",
-    "anahtar teslim iç mimari",
+    "konut projeleri Ankara",
+    "anahtar teslim iç mimari Ankara",
     "ince işçilik",
     "dekorasyon Ankara",
   ],
   openGraph: {
-    title: "ARAS İNŞAAT",
+    title: defaultTitle,
     description: site.description,
+    siteName: site.name,
     locale: "tr_TR",
     type: "website",
   },
+  twitter: { card: "summary_large_image", title: defaultTitle, description: site.description },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
   themeColor: "#0d0d0f",
   // Çentikli iPhone'larda env(safe-area-inset-*) değerlerinin çalışması için.
   viewportFit: "cover",
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
-  name: site.name,
-  founder: { "@type": "Person", name: site.founder },
-  foundingDate: String(site.founded),
-  areaServed: { "@type": "City", name: site.city },
-  address: { "@type": "PostalAddress", addressLocality: site.city, addressCountry: "TR" },
-  telephone: "+90 532 630 46 77",
-  email: site.email,
-  sameAs: [site.instagram.url],
-  slogan: site.slogan,
-  description: site.description,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -78,10 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           İçeriğe geç
         </a>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <JsonLd data={organizationLd()} />
         <SmoothScroll>
           <Header />
           <PageTransition />

@@ -12,6 +12,7 @@ export default function MaskText({
   lineClassName,
   delay = 0,
   inView = true,
+  play = true,
   as: Tag = "h2",
 }: {
   lines: React.ReactNode[];
@@ -19,11 +20,13 @@ export default function MaskText({
   lineClassName?: (i: number) => string | undefined;
   delay?: number;
   inView?: boolean;
+  /** false iken metin DOM'da (arama motorları okur) ama maskenin altında bekler. */
+  play?: boolean;
   as?: "h1" | "h2" | "h3" | "p";
 }) {
   const ref = useRef<HTMLHeadingElement>(null);
   const seen = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
-  const show = !inView || seen;
+  const show = play && (!inView || seen);
 
   return (
     <Tag ref={ref} className={className}>
@@ -37,6 +40,8 @@ export default function MaskText({
           >
             {line}
           </motion.span>
+          {/* Satırlar arası boşluk: metin çıkarıldığında kelimeler birleşmesin (SEO / ekran okuyucu) */}
+          {i < lines.length - 1 && " "}
         </span>
       ))}
     </Tag>

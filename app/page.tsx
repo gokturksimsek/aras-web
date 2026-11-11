@@ -6,6 +6,11 @@ import Services from "@/components/Services";
 import Projects from "@/components/Projects";
 import References from "@/components/References";
 import CtaBand from "@/components/CtaBand";
+import type { Metadata } from "next";
+import { site } from "@/lib/site";
+import { pageMeta } from "@/lib/seo";
+
+export const metadata: Metadata = pageMeta({ description: site.description, path: "/" });
 
 // Anasayfa: her bölümün özeti; ayrıntılar kendi sayfasında (OBES düzeni).
 export default function Home() {

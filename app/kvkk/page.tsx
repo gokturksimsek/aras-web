@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import { kvkk } from "@/lib/kvkk";
 import { pages } from "@/lib/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: kvkk.title,
   description: "ARAS İNŞAAT kişisel verilerin korunması ve işlenmesine ilişkin aydınlatma metni.",
-};
+  path: "/kvkk",
+});
 
 export default function KvkkPage() {
   const p = pages.kvkk;
