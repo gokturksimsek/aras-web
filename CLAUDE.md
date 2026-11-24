@@ -16,6 +16,13 @@ Kod yazmadan önce yanıtın ilk satırında işi hangi ajanın yürüttüğü y
 
 @.claude/rules/seo-agent.md
 
+## WebLift büyüme araçları (GSC MCP · ajanlar · skill'ler)
+
+- `.mcp.json` → `gsc` sunucusu (`mcp-server-gsc`, salt okunur). Anahtar yolu `GSC_CREDENTIALS_PATH` ortam değişkeninden; JSON anahtarı repoya girmez (`.gitignore`).
+- Ajanlar `.claude/agents/`: `luxury-web-architect`, `seo-gsc-strategist`, `ads-performance-director`.
+- Skill'ler `.claude/skills/`: `/weblift-full-launch`, `/gsc-audit-boost`, `/min-budget-max-roas`. Çıktılar `docs/launch|seo|ads/` altına yazılır.
+- Bu dosyadaki kurallar (uydurma veri yok, palet, CTA dili) bu araçlardan önce gelir.
+
 ## Proje özeti
 
 - **Müşteri:** ARAS İNŞAAT — Ankara. Slogan (logodan): *Özenle ve Güvenle*.

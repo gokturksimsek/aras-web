@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "gsc": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "mcp-server-gsc"],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "${GSC_CREDENTIALS_PATH:-/path/to/gsc-service-account.json}"
+      }
+    }
+  }
+}
